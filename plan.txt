@@ -22,3 +22,47 @@ returnBook()
 RemoveBook()
 each one of these updates the database
 checkInventory sends a query to the database and returns a list of all books in the library
+for users: they can only check which books are available,request to get one and return one
+so we'll have a database with all books in it, the ones that are available are shown as, while the ones that are loaned are shown as loaned to a user
+books class:
+private:
+string bookName
+string BookTitle
+int BookId(store them as a hashmap id = key)
+string AuthorName (might add this)
+public:
+setters:
+void setBookName(string arg){
+    this->bookName = arg;
+}
+void setBookTitle(string arg){
+    this->BookTitle = arg;
+}
+void setBookId(int arg){
+    this->BookId = arg;
+}
+void setAuthorName(string arg){
+    this->AuthorName = arg;
+}
+getters:
+string getBookName(){
+    return this->bookName:
+}
+string getBookTitle(){
+    return this->BookTitle
+}
+int getBookID(){
+    return this->BookId
+}
+string getAuthorName(){
+    return this->AuthorName
+}
+constructor:
+createBook(string BookName,string BookTitle,int BookId,string AuthorName){
+    setBookName(BookName);
+    setBookTitle(BookTitle);
+    setBookId(bookID)
+    setAuthorName(AuthorName);
+}
+alt constructor:
+Book(string bookName,string BookTitle,int BookId,string AuthorName):bookName(bookName),BookTitle(BookTitle),bookID(bookID),AuthorName(AuthorName){}
