@@ -1,0 +1,24 @@
+plan:
+make a monolith (front and backend in the same project)
+front end is a simple ui interface that can:
+1 show books in the inventory (book class)
+2 add books to the inventory (admin login)
+3 remove books from the inventory:
+3.1 books can get loaned out to users
+3.2 books can get fully removed
+3.3 books can be returned to the inventory
+4 choose a pattern for the ui and the gateway and the backend
+three layers: 
+4.1 Presentation: basically the ui
+4.2 domain logic that is the real point of the system (point #3)
+4.3 data source (communication with the database)
+
+Domain logic choice: 
+transaction script; there will be a method for each action the admin can take
+checkInventory()
+AddBook()
+LoanBook()
+returnBook()
+RemoveBook()
+each one of these updates the database
+checkInventory sends a query to the database and returns a list of all books in the library
