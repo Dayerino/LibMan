@@ -1,12 +1,21 @@
 #include "header.h"
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
     switch(message){
-        /*case WM_CREATE:
+        case WM_CREATE:{
         SetWindowLongPtr(hWnd, 0, (LONG_PTR)Ptr);
-        break;
-        case WM_DESTROY:
+        return 0;
+    }
+        case WM_CTLCOLORSTATIC:{
+        HDC hdcStatic = (HDC)wParam;
+        HWND hwndStatic = (HWND)lParam;
+        SetTextColor(hdcStatic,RGB(0,0,0));
+        SetBkMode(hdcStatic,TRANSPARENT);
+        return(INT_PTR)GetStockObject(NULL_BRUSH);
+    }
+        case WM_DESTROY:{
         void* Ptr = (void*)GetWindowLongPtr(hWnd,0);
-        break;*/
+        PostQuitMessage(0);
+        return 0;}
         default:
         return DefWindowProc(hWnd,message,wParam,lParam);
     }
@@ -22,11 +31,14 @@ void registerWindow(HINSTANCE hInstance){
     window.hbrBackground = NULL;
     window.lpszMenuName = NULL;//assigns what menu is linked to this window (might change later using LOADMenu after creating one)
     window.lpszClassName = TEXT("MainWindow");
-    window.hbrBackground = CreateSolidBrush(RGB(245,245,245));
+    window.hbrBackground = CreateSolidBrush(RGB(222,222,222));
     if(!RegisterClass(&window)){
         MessageBox(NULL,TEXT("window class registration failed"),TEXT("Error"),MB_ICONERROR);
     }
 }
 HWND createMainWindow(HINSTANCE hInstance){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("MainWindow"),TEXT("LibMan"),WS_OVERLAPPEDWINDOW,windowXpos,windowYpos,windowWidth,windowHeight,NULL,NULL,window.hInstance,NULL);
+}
+HWND createTitleWindow(HINSTANCE hInstance,HWND MainWindow){
+    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("STATIC"),TEXT("Library Manager"),WS_CHILD|WS_BORDER,TitleWindowXpos,TitleWindowYpos,TitleWindowWidth,TitleWindowHeight,MainWindow,NULL,window.hInstance,NULL);
 }

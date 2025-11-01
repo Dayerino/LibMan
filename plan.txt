@@ -12,6 +12,12 @@ three layers:
 4.1 Presentation: basically the ui
 4.2 domain logic that is the real point of the system (point #3)
 4.3 data source (communication with the database)
+ui design:
+a smaller window inside, with the logo(?) or just something that says Lib Manger or something like that(done)
+    buttons:
+        show books button->clicking on a book displays information about it(might not need this and simply load all available books on start)
+        a button to add a book
+        a button to remove/edit a book from inventory
 
 Domain logic choice: 
 transaction script; there will be a method for each action the admin can take
