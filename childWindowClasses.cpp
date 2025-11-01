@@ -1,0 +1,76 @@
+#include "header.h"
+LRESULT CALLBACK currentBooksWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
+    switch(message){
+    case WM_CREATE:{
+        SCROLLINFO scrl = { sizeof(scrl)};
+        scrl.nMin = 0;
+        scrl.nMax = 100;
+        SetScrollInfo(hWnd,SB_VERT,&scrl,TRUE);
+        return 0;
+    }
+    case WM_VSCROLL:{
+            SCROLLINFO scrl = {sizeof(scrl)};
+            scrl.fMask = SIF_ALL;
+            GetScrollInfo(hWnd,SB_VERT,&scrl);
+            int pos = scrl.nPos;
+            switch(LOWORD(wParam)){
+                case SB_LINEUP:
+                scrl.nPos -=1;
+                break;
+                case SB_LINEDOWN:
+                scrl.nPos +=1;
+                break;
+                case SB_PAGEUP:
+                scrl.nPos -=scrl.nPage;
+                break;
+                case SB_PAGEDOWN:
+                scrl.nPos +=scrl.nPage;
+                break;
+                case SB_THUMBTRACK:
+                scrl.nPos = HIWORD(wParam);
+                break;
+            }
+            scrl.fMask = SIF_POS;
+            SetScrollInfo(hWnd,SB_VERT,&scrl,TRUE);
+            GetScrollInfo(hWnd,SB_VERT,&scrl);
+            if(scrl.nPos != pos){
+                ScrollWindow(hWnd,0,pos - scrl.nPos,NULL,NULL);
+                UpdateWindow(hWnd);
+            }
+            break;
+        }
+        case WM_PAINT:{
+            PAINTSTRUCT scrollStruct;
+            HDC scrollhdc = BeginPaint(hWnd,&scrollStruct);
+            SCROLLINFO scrlInf = {sizeof(scrlInf),SIF_POS};
+            GetScrollInfo(hWnd,SB_VERT,&scrlInf);
+            int offset=scrlInf.nPos;
+            for(int i = 0;i<100;i++){ TextOut(scrollhdc,10,20 * (i - offset),"text",12); }
+            EndPaint(hWnd,&scrollStruct);
+            break;
+        }
+        case WM_DESTROY:{
+            PostQuitMessage(0);
+            return 0;
+        }
+        default:
+        return DefWindowProc(hWnd,message,wParam,lParam);
+}
+return 0;
+}
+void registercurrentBooksWindow(HINSTANCE hInstance){
+    WNDCLASS currentBooksWindow={};
+    currentBooksWindow.lpfnWndProc = currentBooksWndProc;
+    currentBooksWindow.cbClsExtra = 0;
+    currentBooksWindow.cbWndExtra = 0;
+    currentBooksWindow.hInstance = hInstance;
+    currentBooksWindow.hIcon = NULL; //setting the executable icon
+    currentBooksWindow.hCursor =LoadCursor(NULL,IDC_ARROW);//setting cursour inside window
+    currentBooksWindow.hbrBackground = NULL;
+    currentBooksWindow.lpszMenuName = NULL;//assigns what menu is linked to this window (might change later using LOADMenu after creating one)
+    currentBooksWindow.lpszClassName = TEXT("CurrentBooksWindow");
+    currentBooksWindow.hbrBackground = CreateSolidBrush(RGB(222,222,222));
+    if(!RegisterClass(&currentBooksWindow)){
+        MessageBox(NULL,TEXT("current books window class registration failed"),TEXT("Error"),MB_ICONERROR);
+    }
+}

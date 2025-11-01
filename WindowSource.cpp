@@ -1,8 +1,9 @@
-#include "header.h"
+#include "header.h" 
+#include "childWindowClasses.cpp"
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
     switch(message){
         case WM_CREATE:{
-        SetWindowLongPtr(hWnd, 0, (LONG_PTR)Ptr);
+        SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)Ptr);
         return 0;
     }
         case WM_CTLCOLORSTATIC:{
@@ -21,13 +22,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
     }
     return 0;
 }
-void registerWindow(HINSTANCE hInstance){
+void registerMainWindow(HINSTANCE hInstance){
     window.lpfnWndProc = WndProc;
     window.cbClsExtra = 0;
     window.cbWndExtra = sizeof(void*);//saving space for a potential pointer to be stored in the window(?)
     window.hInstance = GetModuleHandle(NULL);//this means that this window is owned by itself
     window.hIcon = NULL; //setting the executable icon
-    window.hCursor =LoadCursor(NULL,IDC_IBEAM);//setting cursour inside window
+    window.hCursor =LoadCursor(NULL,IDC_ARROW);//setting cursour inside window
     window.hbrBackground = NULL;
     window.lpszMenuName = NULL;//assigns what menu is linked to this window (might change later using LOADMenu after creating one)
     window.lpszClassName = TEXT("MainWindow");
@@ -41,4 +42,7 @@ HWND createMainWindow(HINSTANCE hInstance){
 }
 HWND createTitleWindow(HINSTANCE hInstance,HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("STATIC"),TEXT("Library Manager"),WS_CHILD|WS_BORDER,TitleWindowXpos,TitleWindowYpos,TitleWindowWidth,TitleWindowHeight,MainWindow,NULL,window.hInstance,NULL);
+}
+HWND CreateCurrentBooksWindow(HINSTANCE hInstance,HWND MainWindow){
+    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("CurrentBooksWindow"),TEXT(""),WS_CHILD|WS_BORDER|WS_VSCROLL,CrntBooksWndXpos,CrntBooksWndYpos,CrntBooksWndWidth,crntBookInfWndHeight,MainWindow,NULL,window.hInstance,NULL);
 }
