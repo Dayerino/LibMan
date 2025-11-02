@@ -1,17 +1,17 @@
 #include "header.h"
-LRESULT CALLBACK currentBooksWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
+LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wParam, LPARAM lParam){
     switch(message){
     case WM_CREATE:{
         SCROLLINFO scrl = { sizeof(scrl)};
         scrl.nMin = 0;
         scrl.nMax = 100;
-        SetScrollInfo(hWnd,SB_VERT,&scrl,TRUE);
+        SetScrollInfo(crntbookshWnd,SB_VERT,&scrl,TRUE);
         return 0;
     }
     case WM_VSCROLL:{
             SCROLLINFO scrl = {sizeof(scrl)};
             scrl.fMask = SIF_ALL;
-            GetScrollInfo(hWnd,SB_VERT,&scrl);
+            GetScrollInfo(crntbookshWnd,SB_VERT,&scrl);
             int pos = scrl.nPos;
             switch(LOWORD(wParam)){
                 case SB_LINEUP:
@@ -31,22 +31,22 @@ LRESULT CALLBACK currentBooksWndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
                 break;
             }
             scrl.fMask = SIF_POS;
-            SetScrollInfo(hWnd,SB_VERT,&scrl,TRUE);
-            GetScrollInfo(hWnd,SB_VERT,&scrl);
+            SetScrollInfo(crntbookshWnd,SB_VERT,&scrl,TRUE);
+            GetScrollInfo(crntbookshWnd,SB_VERT,&scrl);
             if(scrl.nPos != pos){
-                ScrollWindow(hWnd,0,pos - scrl.nPos,NULL,NULL);
-                UpdateWindow(hWnd);
+                ScrollWindow(crntbookshWnd,0,pos - scrl.nPos,NULL,NULL);
+                UpdateWindow(crntbookshWnd);
             }
             break;
         }
         case WM_PAINT:{
             PAINTSTRUCT scrollStruct;
-            HDC scrollhdc = BeginPaint(hWnd,&scrollStruct);
+            HDC scrollhdc = BeginPaint(crntbookshWnd,&scrollStruct);
             SCROLLINFO scrlInf = {sizeof(scrlInf),SIF_POS};
-            GetScrollInfo(hWnd,SB_VERT,&scrlInf);
+            GetScrollInfo(crntbookshWnd,SB_VERT,&scrlInf);
             int offset=scrlInf.nPos;
             for(int i = 0;i<100;i++){ TextOut(scrollhdc,10,20 * (i - offset),"text",12); }
-            EndPaint(hWnd,&scrollStruct);
+            EndPaint(crntbookshWnd,&scrollStruct);
             break;
         }
         case WM_DESTROY:{
@@ -54,7 +54,7 @@ LRESULT CALLBACK currentBooksWndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
             return 0;
         }
         default:
-        return DefWindowProc(hWnd,message,wParam,lParam);
+        return DefWindowProc(crntbookshWnd,message,wParam,lParam);
 }
 return 0;
 }

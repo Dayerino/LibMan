@@ -1,5 +1,6 @@
 #include "header.h" 
-#include "childWindowClasses.cpp"
+#include "currentBooksWnd.cpp"
+#include "BookInfoWnd.cpp"
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
     switch(message){
         case WM_CREATE:{
@@ -44,5 +45,8 @@ HWND createTitleWindow(HINSTANCE hInstance,HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("STATIC"),TEXT("Library Manager"),WS_CHILD|WS_BORDER,TitleWindowXpos,TitleWindowYpos,TitleWindowWidth,TitleWindowHeight,MainWindow,NULL,window.hInstance,NULL);
 }
 HWND CreateCurrentBooksWindow(HINSTANCE hInstance,HWND MainWindow){
-    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("CurrentBooksWindow"),TEXT(""),WS_CHILD|WS_BORDER|WS_VSCROLL,CrntBooksWndXpos,CrntBooksWndYpos,CrntBooksWndWidth,crntBookInfWndHeight,MainWindow,NULL,window.hInstance,NULL);
+    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("CurrentBooksWindow"),TEXT(""),WS_CHILD|WS_BORDER|WS_VSCROLL,CrntBooksWndXpos,CrntBooksWndYpos,CrntBooksWndWidth,crntBooksWndHeight,MainWindow,NULL,window.hInstance,NULL);
+}
+HWND CreateBookInfoWindow(HINSTANCE hInstance,HWND MainWindow){
+    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BookInfoWindow"),TEXT("BookInfo"),WS_CHILD|WS_BORDER,bookInfoWndXpos,bookInfoWndYpos,bookInfoWndWidth,bookInfoWndHeight,MainWindow,NULL,window.hInstance,NULL);
 }
