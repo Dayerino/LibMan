@@ -10,6 +10,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     CurrentBooksWindow = CreateCurrentBooksWindow(hInstance,hWnd);
     BookInfoWindow = CreateBookInfoWindow(hInstance,hWnd);
     ShowBooksBtn = CreateShowAllBooksButton(hInstance,hWnd);
+    AddBookBtn = CreateAddBookButton(hInstance,hWnd);
+    ModifyBookBtn=CreateModifyBookButton(hInstance,hWnd);
+    RemoveBookBtn=CreateRemoveBookButton(hInstance,hWnd);
     SendMessage(TitleWindow,WM_SETFONT,(WPARAM)hFont,TRUE);
     MSG msg;
     ShowWindow(hWnd,SW_SHOW);

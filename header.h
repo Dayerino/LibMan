@@ -66,8 +66,15 @@ int bookInfoWndWidth = windowWidth * 0.5;
 int bookInfoWndHeight= windowHeight - crntBooksWndHeight;
 int bookInfoWndXpos=0;
 int bookInfoWndYpos=crntBooksWndHeight + (windowHeight *0.08);
-int BtnWidth = windowWidth *0.4;
-int BtnHeight=windowWidth *0.2;
+int BtnWidth = windowWidth *0.48;
+int BtnHeight=windowWidth *0.1;
 int showBooksBtnXpos=windowWidth *0.5;
-int showBooksBtnYpos=windowHeight * 0.2;
+int showBooksBtnYpos=bookInfoWndYpos;
+int addBookBtnXpos = showBooksBtnXpos;
+int addBookBtnYpos = showBooksBtnYpos + BtnHeight;
+int modifyBookBtnXpos=showBooksBtnXpos;
+int modifyBookBtnYpos = addBookBtnYpos+ BtnHeight ;
+int removeBookBtnXpos = showBooksBtnXpos;
+int removeBookBtnYpos=modifyBookBtnYpos + BtnHeight;
+
 #endif

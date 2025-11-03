@@ -18,7 +18,6 @@ a smaller window inside, with the logo(?) or just something that says Lib Manger
         show books button->clicking on a book displays information about it(might not need this and simply load all available books on start)
         a button to add a book
         a button to remove/edit a book from inventory
-
 Domain logic choice: 
 transaction script; there will be a method for each action the admin can take
 checkInventory()
@@ -72,3 +71,6 @@ createBook(string BookName,string BookTitle,int BookId,string AuthorName){
 }
 alt constructor:
 Book(string bookName,string BookTitle,int BookId,string AuthorName):bookName(bookName),BookTitle(BookTitle),bookID(bookID),AuthorName(AuthorName){}
+03/11/25 update:
+ui is pretty much done, next steps to take are:
+make a book class and display its information on the UI BEFORE starting work on the database and the transaction script

@@ -44,8 +44,8 @@ LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wP
             HDC scrollhdc = BeginPaint(crntbookshWnd,&scrollStruct);
             SCROLLINFO scrlInf = {sizeof(scrlInf),SIF_POS};
             GetScrollInfo(crntbookshWnd,SB_VERT,&scrlInf);
-            int offset=scrlInf.nPos;
-            for(int i = 0;i<100;i++){ TextOut(scrollhdc,10,20 * (i - offset),"text",12); }
+            /*int offset=scrlInf.nPos;
+            for(int i = 0;i<100;i++){ TextOut(scrollhdc,10,20 * (i - offset),"text",12); }*/
             EndPaint(crntbookshWnd,&scrollStruct);
             break;
         }
