@@ -4,10 +4,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     registerMainWindow(hInstance);
     registercurrentBooksWindow(hInstance);
     registerBookInfoWindow(hInstance);
+    //registerBtnWindow(hInstance);
     hWnd = createMainWindow(hInstance);
     TitleWindow = createTitleWindow(hInstance,hWnd);
     CurrentBooksWindow = CreateCurrentBooksWindow(hInstance,hWnd);
     BookInfoWindow = CreateBookInfoWindow(hInstance,hWnd);
+    ShowBooksBtn = CreateShowAllBooksButton(hInstance,hWnd);
     SendMessage(TitleWindow,WM_SETFONT,(WPARAM)hFont,TRUE);
     MSG msg;
     ShowWindow(hWnd,SW_SHOW);
@@ -17,6 +19,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     UpdateWindow(CurrentBooksWindow);
     ShowWindow(BookInfoWindow,SW_SHOW);
     UpdateWindow(BookInfoWindow);
+    ShowWindow(BookInfoWindow,SW_SHOW);
     UpdateWindow(hWnd);
     while(GetMessage(&msg,NULL,0,0)){
         TranslateMessage(&msg);

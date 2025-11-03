@@ -9,6 +9,10 @@ HWND hWnd;
 HWND TitleWindow; 
 HWND CurrentBooksWindow;
 HWND BookInfoWindow;
+HWND ShowBooksBtn;
+HWND AddBookBtn;
+HWND ModifyBookBtn;
+HWND RemoveBookBtn;
 int * Ptr;
 void registerMainWindow(HINSTANCE hInstance);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -24,6 +28,8 @@ HWND CreateShowAllBooksButton(HINSTANCE hInstance,HWND MainWindow);
 HWND CreateAddBookButton(HINSTANCE hInstance, HWND MainWindow);
 HWND CreateModifyBookButton(HINSTANCE hInstance,HWND MainWindow);
 HWND CreateRemoveBookButton(HINSTANCE hInstance,HWND MainWindow);
+LRESULT CALLBACK ButtonWindowsProc(HWND BtnWndProc,UINT message,WPARAM wParam, LPARAM lParam);
+void registerBtnWindow(HINSTANCE hInstance);
 HFONT hFont = CreateFont(
     24,                // Height
     0,                 // Width
@@ -60,4 +66,8 @@ int bookInfoWndWidth = windowWidth * 0.5;
 int bookInfoWndHeight= windowHeight - crntBooksWndHeight;
 int bookInfoWndXpos=0;
 int bookInfoWndYpos=crntBooksWndHeight + (windowHeight *0.08);
+int BtnWidth = windowWidth *0.4;
+int BtnHeight=windowWidth *0.2;
+int showBooksBtnXpos=windowWidth *0.5;
+int showBooksBtnYpos=windowHeight * 0.2;
 #endif

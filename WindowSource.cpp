@@ -3,10 +3,18 @@
 #include "BookInfoWnd.cpp"
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
     switch(message){
+        
         case WM_CREATE:{
         SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)Ptr);
         return 0;
     }
+        case WM_COMMAND:{
+            if(LOWORD(wParam)== 1001){
+                MessageBox(NULL,TEXT("button pressed!"),TEXT("not error"),MB_ICONEXCLAMATION);
+            }
+            return 0;
+        }
+        break;
         case WM_CTLCOLORSTATIC:{
         HDC hdcStatic = (HDC)wParam;
         HWND hwndStatic = (HWND)lParam;
@@ -50,3 +58,15 @@ HWND CreateCurrentBooksWindow(HINSTANCE hInstance,HWND MainWindow){
 HWND CreateBookInfoWindow(HINSTANCE hInstance,HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BookInfoWindow"),TEXT("BookInfo"),WS_CHILD|WS_BORDER,bookInfoWndXpos,bookInfoWndYpos,bookInfoWndWidth,bookInfoWndHeight,MainWindow,NULL,window.hInstance,NULL);
 }
+HWND CreateShowAllBooksButton(HINSTANCE hInstance,HWND MainWindow){
+   return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Show ALL Books"),WS_CHILD|WS_BORDER|WS_VISIBLE,showBooksBtnXpos,showBooksBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1001,window.hInstance,NULL);
+}
+/*HWND CreateAddBookButton(HINSTANCE hInstance, HWND MainWindow){
+
+}
+HWND CreateModifyBookButton(HINSTANCE hInstance,HWND MainWindow){
+
+}
+HWND CreateRemoveBookButton(HINSTANCE hInstance,HWND MainWindow){
+
+}*/
