@@ -4,6 +4,8 @@
 #include <windows.h>
 #include <winuser.h>
 #include <vector>
+#include <string>
+#include "bookclass.cpp"
 WNDCLASS window = {};
 HWND hWnd;
 HWND TitleWindow; 
@@ -76,5 +78,6 @@ int modifyBookBtnXpos=showBooksBtnXpos;
 int modifyBookBtnYpos = addBookBtnYpos+ BtnHeight ;
 int removeBookBtnXpos = showBooksBtnXpos;
 int removeBookBtnYpos=modifyBookBtnYpos + BtnHeight;
+BOOK newObj("Harry Potter","J.K.R",01);
 
 #endif

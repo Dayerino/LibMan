@@ -32,7 +32,6 @@ so we'll have a database with all books in it, the ones that are available are s
 books class:
 private:
 string bookName
-string BookTitle
 int BookId(store them as a hashmap id = key)
 string AuthorName (might add this)
 public:
