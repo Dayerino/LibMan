@@ -15,9 +15,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 EnableWindow(ModifyBookBtn,TRUE);
             }
             if(LOWORD(wParam)== 1002){
-                EnableWindow(BookInfoWindow,TRUE);
-                newObj = BOOK("HARRY","J.K.R",1);
-                InvalidateRect(BookInfoWindow,NULL,TRUE);
+                if(!TextEdit){
+                    /*create a new window that has these edit classes inside it but they are initially disabled until add a new book is clicked, then the info inside gets
+                    stored in some temp variables to be used to create book objects which get added to the current books window*/
+                TextEdit = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,windowWidth/2,windowHeight/2,150,25,hWnd,(HMENU)1,window.hInstance,NULL);
+                }else{
+                    char buffer[256];
+                    GetWindowText(TextEdit,buffer,256);
+                    Text = buffer;
+                    MessageBox(hWnd,Text.c_str(),"stored text: ",MB_OK);
+                }
+                //InvalidateRect(BookInfoWindow,NULL,TRUE);
                 EnableWindow(RemoveBookBtn,TRUE);
                 EnableWindow(ModifyBookBtn,TRUE);
             }
