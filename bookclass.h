@@ -23,6 +23,7 @@ class BOOK{
     int getBookID(){
         return this->bookID;
     }
+    BOOK(){};
     BOOK(std::string bookTitle,std::string bookAuthor,int bookID){
         setBookTitle(bookTitle);
         setBookAuthor(bookAuthor);

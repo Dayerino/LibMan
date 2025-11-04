@@ -5,7 +5,7 @@
 #include <winuser.h>
 #include <vector>
 #include <string>
-#include "bookclass.cpp"
+#include "bookclass.h"
 WNDCLASS window = {};
 HWND hWnd;
 HWND TitleWindow; 
@@ -78,6 +78,12 @@ int modifyBookBtnXpos=showBooksBtnXpos;
 int modifyBookBtnYpos = addBookBtnYpos+ BtnHeight ;
 int removeBookBtnXpos = showBooksBtnXpos;
 int removeBookBtnYpos=modifyBookBtnYpos + BtnHeight;
-BOOK newObj("Harry Potter","J.K.R",01);
-
+BOOK newObj;
+void automateBookShowing(BOOK& bookObject,HDC hdc,int xpos,int ypos){
+    TextOut(hdc,xpos,ypos,bookObject.getBookTitle().c_str(),bookObject.getBookTitle().length());
+    TextOut(hdc,xpos,ypos +20,bookObject.getBookAuthor().c_str(),bookObject.getBookAuthor().length());
+    int bookID= bookObject.getBookID();
+    std::string bookIDstr = std::to_string(bookID);
+    TextOut(hdc,xpos,ypos + 40,bookIDstr.c_str(),bookIDstr.length());
+}
 #endif

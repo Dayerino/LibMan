@@ -4,8 +4,9 @@ LRESULT CALLBACK BookInfoWindowProc(HWND bookinfohWnd,UINT message,WPARAM wParam
         case WM_PAINT:{
             PAINTSTRUCT Paint;
             HDC hdc = BeginPaint(bookinfohWnd,&Paint);
-            TextOut(hdc,10,10,TEXT("BookInfo"),lstrlen(TEXT("supninja")));
+            automateBookShowing(newObj,hdc,10,20);
             EndPaint(bookinfohWnd,&Paint);
+            break;
             return 0;
         }
         case WM_DESTROY:{

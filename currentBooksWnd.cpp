@@ -44,12 +44,6 @@ LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wP
             HDC scrollhdc = BeginPaint(crntbookshWnd,&scrollStruct);
             SCROLLINFO scrlInf = {sizeof(scrlInf),SIF_POS};
             GetScrollInfo(crntbookshWnd,SB_VERT,&scrlInf);
-            //must automate the function below
-            TextOut(scrollhdc,20,20,newObj.getBookTitle().c_str(),newObj.getBookTitle().length());
-            TextOut(scrollhdc,20,40,newObj.getBookAuthor().c_str(),newObj.getBookAuthor().length());
-            int bkid = newObj.getBookID();
-            std::string bkidStr = std::to_string(bkid);
-            TextOut(scrollhdc,20,60,bkidStr.c_str(),bkidStr.length());
             EndPaint(crntbookshWnd,&scrollStruct);
             break;
         }

@@ -15,7 +15,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 EnableWindow(ModifyBookBtn,TRUE);
             }
             if(LOWORD(wParam)== 1002){
-                MessageBox(NULL,TEXT("button pressed! and buttons enabled!"),TEXT("not error"),MB_ICONEXCLAMATION);
+                EnableWindow(BookInfoWindow,TRUE);
+                newObj = BOOK("HARRY","J.K.R",1);
+                InvalidateRect(BookInfoWindow,NULL,TRUE);
                 EnableWindow(RemoveBookBtn,TRUE);
                 EnableWindow(ModifyBookBtn,TRUE);
             }
@@ -69,7 +71,7 @@ HWND CreateCurrentBooksWindow(HINSTANCE hInstance,HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("CurrentBooksWindow"),TEXT(""),WS_CHILD|WS_BORDER|WS_VSCROLL,CrntBooksWndXpos,CrntBooksWndYpos,CrntBooksWndWidth,crntBooksWndHeight,MainWindow,NULL,window.hInstance,NULL);
 }
 HWND CreateBookInfoWindow(HINSTANCE hInstance,HWND MainWindow){
-    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BookInfoWindow"),TEXT("BookInfo"),WS_CHILD|WS_BORDER,bookInfoWndXpos,bookInfoWndYpos,bookInfoWndWidth,bookInfoWndHeight,MainWindow,NULL,window.hInstance,NULL);
+    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BookInfoWindow"),TEXT("BookInfo"),WS_CHILD|WS_BORDER|WS_DISABLED,bookInfoWndXpos,bookInfoWndYpos,bookInfoWndWidth,bookInfoWndHeight,MainWindow,NULL,window.hInstance,NULL);
 }
 HWND CreateShowAllBooksButton(HINSTANCE hInstance,HWND MainWindow){
    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Show ALL Books"),WS_CHILD|WS_VISIBLE,showBooksBtnXpos,showBooksBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1001,window.hInstance,NULL);
