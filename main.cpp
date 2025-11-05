@@ -4,7 +4,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     registerMainWindow(hInstance);
     registercurrentBooksWindow(hInstance);
     registerBookInfoWindow(hInstance);
-    //registerBtnWindow(hInstance);
     hWnd = createMainWindow(hInstance);
     TitleWindow = createTitleWindow(hInstance,hWnd);
     CurrentBooksWindow = CreateCurrentBooksWindow(hInstance,hWnd);
@@ -13,6 +12,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     AddBookBtn = CreateAddBookButton(hInstance,hWnd);
     ModifyBookBtn=CreateModifyBookButton(hInstance,hWnd);
     RemoveBookBtn=CreateRemoveBookButton(hInstance,hWnd);
+    BookNameInput = createBookNameInput(hInstance,hWnd);
+    AuthorNameInput= createAuthorNameInput(hInstance,hWnd);
+    BookId = createBookIdInput(hInstance,hWnd);
     SendMessage(TitleWindow,WM_SETFONT,(WPARAM)hFont,TRUE);
     MSG msg;
     ShowWindow(hWnd,SW_SHOW);

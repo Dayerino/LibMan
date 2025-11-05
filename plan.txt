@@ -73,3 +73,6 @@ Book(string bookName,string BookTitle,int BookId,string AuthorName):bookName(boo
 03/11/25 update:
 ui is pretty much done, next steps to take are:
 make a book class and display its information on the UI BEFORE starting work on the database and the transaction script
+05/11/25 update:
+will work on adding 3 text files, each of them will save its text to one of the three args for creating an object
+then a button to create the book will show up, how to save it will be worked on later

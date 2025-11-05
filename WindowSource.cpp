@@ -15,17 +15,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 EnableWindow(ModifyBookBtn,TRUE);
             }
             if(LOWORD(wParam)== 1002){
-                if(!TextEdit){
-                    /*create a new window that has these edit classes inside it but they are initially disabled until add a new book is clicked, then the info inside gets
-                    stored in some temp variables to be used to create book objects which get added to the current books window*/
-                TextEdit = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,windowWidth/2,windowHeight/2,150,25,hWnd,(HMENU)1,window.hInstance,NULL);
-                }else{
-                    char buffer[256];
-                    GetWindowText(TextEdit,buffer,256);
-                    Text = buffer;
-                    MessageBox(hWnd,Text.c_str(),"stored text: ",MB_OK);
-                }
+                drawInputTexts = true;
+                InvalidateRect(hWnd,NULL,TRUE);
                 //InvalidateRect(BookInfoWindow,NULL,TRUE);
+                /*BookNameInput = createBookNameInput(hInstance,hWnd);
+    AuthorNameInput= createAuthorNameInput(hInstance,hWnd);
+    BookId = createBookIdInput(hInstance,hWnd);*/
+                ShowWindow(BookNameInput,SW_SHOW);
+                ShowWindow(AuthorNameInput,SW_SHOW);
+                ShowWindow(BookId,SW_SHOW);
                 EnableWindow(RemoveBookBtn,TRUE);
                 EnableWindow(ModifyBookBtn,TRUE);
             }
@@ -45,6 +43,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
         SetBkMode(hdcStatic,TRANSPARENT);
         return(INT_PTR)GetStockObject(NULL_BRUSH);
     }
+        case WM_PAINT:{
+            PAINTSTRUCT ps;
+            HDC hdc= BeginPaint(hWnd,&ps);
+            if(drawInputTexts){
+            TextOut(hdc,enterBookNameXpos,enterBookNameYpos,enterBookName.c_str(),enterBookName.length());
+            TextOut(hdc,enterAuthorNameXpos,enterAuthorNameYpos,enterAuthorName.c_str(),enterAuthorName.length());
+            TextOut(hdc,enterBookIdXpos,enterBookIdYpos,enterBookId.c_str(),enterBookId.length());
+        }
+            EndPaint(hWnd,&ps);
+            break;
+        }
         case WM_DESTROY:{
         void* Ptr = (void*)GetWindowLongPtr(hWnd,0);
         PostQuitMessage(0);
@@ -93,3 +102,54 @@ HWND CreateModifyBookButton(HINSTANCE hInstance,HWND MainWindow){
 HWND CreateRemoveBookButton(HINSTANCE hInstance,HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Remove Book"),WS_CHILD|WS_VISIBLE|WS_DISABLED,removeBookBtnXpos,removeBookBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1004,window.hInstance,NULL);
 }   
+/*
+BookNameInput   = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,BookNameInputBoxXpos,BookNameInputBoxYpos,150,25,hWnd,(HMENU)1,window.hInstance,NULL);
+AuthorNameInput = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,AuthorNameBoxXpos,AuthorNameBoxYpos,150,25,hWnd,(HMENU)2,window.hInstance,NULL);
+ BookId = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,BookIdBoxXpos,BookIdBoxYpos,150,25,hWnd,(HMENU)3,window.hInstance,NULL);
+*/
+HWND createBookNameInput(HINSTANCE hInstance,HWND MainWindow){
+    return CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER,BookNameInputBoxXpos,BookNameInputBoxYpos,150,25,MainWindow,(HMENU)1,window.hInstance,NULL);
+}
+HWND createAuthorNameInput(HINSTANCE hInstance, HWND MainWindow){
+    return  CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER,AuthorNameBoxXpos,AuthorNameBoxYpos,150,25,MainWindow,(HMENU)2,window.hInstance,NULL);
+}
+HWND createBookIdInput(HINSTANCE hInstance, HWND MainWindow){
+    return  CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER,BookIdBoxXpos,BookIdBoxYpos,150,25,MainWindow,(HMENU)3,window.hInstance,NULL);
+}
+
+
+
+//extra shit that will be reused later
+/*while(!BookNameInput && !AuthorNameInput && !BookId){
+                    /*create a new window that has these edit classes inside it but they are initially disabled until add a new book is clicked, then the info inside gets
+                    stored in some temp variables to be used to create book objects which get added to the current books window
+                    if(!BookNameInput){
+                    BookNameInput   = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,BookNameInputBoxXpos,BookNameInputBoxYpos,150,25,hWnd,(HMENU)1,window.hInstance,NULL);
+                }else{
+                    char buffer[256];
+                    GetWindowText(BookNameInput,buffer,256);
+                    storedBookName = buffer;
+                    MessageBox(hWnd,storedBookName.c_str(),"stored Book Name: ",MB_OK);
+                }
+                if(!AuthorNameInput){
+                    AuthorNameInput = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,AuthorNameBoxXpos,AuthorNameBoxYpos,150,25,hWnd,(HMENU)2,window.hInstance,NULL);
+                }else{
+                    char buffer[256];
+                    GetWindowText(AuthorNameInput,buffer,256);
+                    storedAuthorName = buffer;
+                    MessageBox(hWnd,storedAuthorName.c_str(),"stored author name:",MB_OK);
+                }
+                if(!BookId){
+                    BookId = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,BookIdBoxXpos,BookIdBoxYpos,150,25,hWnd,(HMENU)3,window.hInstance,NULL);
+                }else{
+                    char buffer[256];
+                    GetWindowText(BookId,buffer,256);
+                    std::string temp = buffer;
+                    char *end;
+                    storedBookId = strtol(buffer,&end,10);
+                    if(*end != '\0'){
+                        MessageBox(NULL,TEXT("MAKE SURE YOU ENTER A NUMBER FOR THE BOOK ID"),TEXT("invalid input"),MB_ICONERROR);
+                    }
+                    MessageBox(hWnd,temp.c_str(),"Stored BookID",MB_OK);
+                }
+            }*/
