@@ -18,20 +18,43 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 drawInputTexts = true;
                 InvalidateRect(hWnd,NULL,TRUE);
                 //InvalidateRect(BookInfoWindow,NULL,TRUE);
-                /*BookNameInput = createBookNameInput(hInstance,hWnd);
-    AuthorNameInput= createAuthorNameInput(hInstance,hWnd);
-    BookId = createBookIdInput(hInstance,hWnd);*/
                 ShowWindow(BookNameInput,SW_SHOW);
                 ShowWindow(AuthorNameInput,SW_SHOW);
                 ShowWindow(BookId,SW_SHOW);
                 EnableWindow(RemoveBookBtn,TRUE);
                 EnableWindow(ModifyBookBtn,TRUE);
-            }
+                }
+            
             if(LOWORD(wParam)== 1003){
                 MessageBox(NULL,TEXT("button pressed!"),TEXT("not error"),MB_ICONEXCLAMATION);
             }
             if(LOWORD(wParam)== 1004){
                 MessageBox(NULL,TEXT("button pressed!"),TEXT("not error"),MB_ICONEXCLAMATION);
+            }
+            if(LOWORD(wParam) == 1005){
+                drawInputTexts = false;
+                ShowWindow(BookNameInput,SW_HIDE);
+                ShowWindow(AuthorNameInput,SW_HIDE);
+                ShowWindow(BookId,SW_HIDE);
+                //clearing text
+                SetWindowText(BookNameInput, "");
+                SetWindowText(AuthorNameInput, "");
+                SetWindowText(BookId, "");
+                InvalidateRect(hWnd,NULL,TRUE);
+                UpdateWindow(hWnd);
+            }
+            if(HIWORD(wParam) == EN_CHANGE){
+                int changedInput = LOWORD(wParam);
+                if(changedInput == 1 || changedInput == 2 || changedInput == 3){
+                    int BookNameTxtLen = GetWindowTextLength(BookNameInput);
+                    int AuthorNameTxtLen=GetWindowTextLength(AuthorNameInput);
+                    int bookIDTxtLen = GetWindowTextLength(BookId);
+                    if(BookNameTxtLen >0 && AuthorNameTxtLen>0 && bookIDTxtLen >0){
+                        EnableWindow(SubmitNewBookBtn,TRUE);
+                    }else{
+                        EnableWindow(SubmitNewBookBtn,FALSE);
+                    }
+                }
             }
             return 0;
         }
@@ -50,6 +73,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
             TextOut(hdc,enterBookNameXpos,enterBookNameYpos,enterBookName.c_str(),enterBookName.length());
             TextOut(hdc,enterAuthorNameXpos,enterAuthorNameYpos,enterAuthorName.c_str(),enterAuthorName.length());
             TextOut(hdc,enterBookIdXpos,enterBookIdYpos,enterBookId.c_str(),enterBookId.length());
+        }   else{
+            TextOut(hdc,enterBookNameXpos,enterBookNameYpos,"",0);
+            TextOut(hdc,enterAuthorNameXpos,enterAuthorNameYpos,"",0);
+            TextOut(hdc,enterBookIdXpos,enterBookIdYpos,"",0);
         }
             EndPaint(hWnd,&ps);
             break;
@@ -90,6 +117,8 @@ HWND CreateCurrentBooksWindow(HINSTANCE hInstance,HWND MainWindow){
 HWND CreateBookInfoWindow(HINSTANCE hInstance,HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BookInfoWindow"),TEXT("BookInfo"),WS_CHILD|WS_BORDER|WS_DISABLED,bookInfoWndXpos,bookInfoWndYpos,bookInfoWndWidth,bookInfoWndHeight,MainWindow,NULL,window.hInstance,NULL);
 }
+
+//create buttons
 HWND CreateShowAllBooksButton(HINSTANCE hInstance,HWND MainWindow){
    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Show ALL Books"),WS_CHILD|WS_VISIBLE,showBooksBtnXpos,showBooksBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1001,window.hInstance,NULL);
 }
@@ -101,7 +130,10 @@ HWND CreateModifyBookButton(HINSTANCE hInstance,HWND MainWindow){
 }
 HWND CreateRemoveBookButton(HINSTANCE hInstance,HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Remove Book"),WS_CHILD|WS_VISIBLE|WS_DISABLED,removeBookBtnXpos,removeBookBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1004,window.hInstance,NULL);
-}   
+} 
+HWND CreateSubmitBtn(HINSTANCE hInstance, HWND MainWindow){
+    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Submit Book"),WS_CHILD|WS_DISABLED|WS_VISIBLE,submitBookBtnXpos,submitBookBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1005,window.hInstance,NULL);
+}
 /*
 BookNameInput   = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,BookNameInputBoxXpos,BookNameInputBoxYpos,150,25,hWnd,(HMENU)1,window.hInstance,NULL);
 AuthorNameInput = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,AuthorNameBoxXpos,AuthorNameBoxYpos,150,25,hWnd,(HMENU)2,window.hInstance,NULL);

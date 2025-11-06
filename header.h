@@ -32,10 +32,12 @@ HWND ShowBooksBtn;
 HWND AddBookBtn;
 HWND ModifyBookBtn;
 HWND RemoveBookBtn;
+HWND SubmitNewBookBtn;
 HWND CreateShowAllBooksButton(HINSTANCE hInstance,HWND MainWindow);
 HWND CreateAddBookButton(HINSTANCE hInstance, HWND MainWindow);
 HWND CreateModifyBookButton(HINSTANCE hInstance,HWND MainWindow);
 HWND CreateRemoveBookButton(HINSTANCE hInstance,HWND MainWindow);
+HWND CreateSubmitBtn(HINSTANCE hInstance, HWND MainWindow);
 LRESULT CALLBACK ButtonWindowsProc(HWND BtnWndProc,UINT message,WPARAM wParam, LPARAM lParam);
 void registerBtnWindow(HINSTANCE hInstance);
 
@@ -99,6 +101,8 @@ int modifyBookBtnXpos=showBooksBtnXpos;
 int modifyBookBtnYpos = addBookBtnYpos+ BtnHeight ;
 int removeBookBtnXpos = showBooksBtnXpos;
 int removeBookBtnYpos=modifyBookBtnYpos + BtnHeight;
+int submitBookBtnXpos= showBooksBtnXpos;
+int submitBookBtnYpos= removeBookBtnYpos + (windowHeight * 0.25);
 
 int enterBookNameXpos = showBooksBtnXpos + (windowWidth *0.03);
 int enterBookNameYpos = removeBookBtnYpos + (windowHeight * 0.11);
@@ -123,4 +127,7 @@ void automateBookShowing(BOOK& bookObject,HDC hdc,int xpos,int ypos){
     TextOut(hdc,xpos,ypos + 40,bookIDstr.c_str(),bookIDstr.length());
 }
 bool drawInputTexts = false;
+/*what im trying to do:
+check the textinput fields, the text inside will be added as params to a new book object which will be stored somewhere
+so we got the button, the three text fields and a new book object*/
 #endif

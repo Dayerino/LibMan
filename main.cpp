@@ -12,6 +12,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     AddBookBtn = CreateAddBookButton(hInstance,hWnd);
     ModifyBookBtn=CreateModifyBookButton(hInstance,hWnd);
     RemoveBookBtn=CreateRemoveBookButton(hInstance,hWnd);
+    SubmitNewBookBtn = CreateSubmitBtn(hInstance,hWnd);
     BookNameInput = createBookNameInput(hInstance,hWnd);
     AuthorNameInput= createAuthorNameInput(hInstance,hWnd);
     BookId = createBookIdInput(hInstance,hWnd);
@@ -26,6 +27,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     UpdateWindow(BookInfoWindow);
     ShowWindow(BookInfoWindow,SW_SHOW);
     UpdateWindow(hWnd);
+    //checkTextFields(SubmitNewBookBtn,BookNameInput,AuthorNameInput, BookId);
     while(GetMessage(&msg,NULL,0,0)){
         TranslateMessage(&msg);
         DispatchMessage(&msg);
