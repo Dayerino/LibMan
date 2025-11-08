@@ -127,6 +127,14 @@ void automateBookShowing(BOOK& bookObject,HDC hdc,int xpos,int ypos){
     TextOut(hdc,xpos,ypos + 40,bookIDstr.c_str(),bookIDstr.length());
 }
 bool drawInputTexts = false;
+std::string GetTextFromInput(HWND hwnd){
+    std:: string text;
+    int txtLen = GetWindowTextLength(hwnd);
+    text.resize(txtLen + 1);
+    int textSize = GetWindowText(hwnd,&text[0],txtLen + 1 );
+    text.resize(textSize);
+    return text;
+}
 /*what im trying to do:
 check the textinput fields, the text inside will be added as params to a new book object which will be stored somewhere
 so we got the button, the three text fields and a new book object*/

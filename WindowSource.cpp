@@ -17,7 +17,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
             if(LOWORD(wParam)== 1002){
                 drawInputTexts = true;
                 InvalidateRect(hWnd,NULL,TRUE);
-                //InvalidateRect(BookInfoWindow,NULL,TRUE);
+                InvalidateRect(BookInfoWindow,NULL,TRUE);
                 ShowWindow(BookNameInput,SW_SHOW);
                 ShowWindow(AuthorNameInput,SW_SHOW);
                 ShowWindow(BookId,SW_SHOW);
@@ -36,6 +36,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(BookNameInput,SW_HIDE);
                 ShowWindow(AuthorNameInput,SW_HIDE);
                 ShowWindow(BookId,SW_HIDE);
+                std::string BN= GetTextFromInput(BookNameInput);
+                std::string AN=GetTextFromInput(AuthorNameInput);
+                std:: string bID=GetTextFromInput(BookId);
+                int bookId = std::stoi(bID);
+                newObj.setBookTitle(BN);
+                newObj.setBookAuthor(AN);
+                newObj.setBookID(bookId);
                 //clearing text
                 SetWindowText(BookNameInput, "");
                 SetWindowText(AuthorNameInput, "");
@@ -45,7 +52,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
             }
             if(HIWORD(wParam) == EN_CHANGE){
                 int changedInput = LOWORD(wParam);
-                if(changedInput == 1 || changedInput == 2 || changedInput == 3){
+                if(changedInput == 1 || changedInput == 2 || changedInput == 3){//1 2 3 are the wParams of the text fields
                     int BookNameTxtLen = GetWindowTextLength(BookNameInput);
                     int AuthorNameTxtLen=GetWindowTextLength(AuthorNameInput);
                     int bookIDTxtLen = GetWindowTextLength(BookId);
