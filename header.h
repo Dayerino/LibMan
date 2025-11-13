@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 #include "bookclass.h"
-
+#include "sqltest.h"
 //main windows:
 
 WNDCLASS window = {};
