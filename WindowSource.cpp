@@ -1,4 +1,4 @@
-#include "header.h" 
+#include "header.h"
 #include "currentBooksWnd.cpp"
 #include "BookInfoWnd.cpp"
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
@@ -90,6 +90,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
         }
         case WM_DESTROY:{
         void* Ptr = (void*)GetWindowLongPtr(hWnd,0);
+        if(rc == SQLITE_OK){
+        sqlite3_close(database);
+        }
         PostQuitMessage(0);
         return 0;}
         default:

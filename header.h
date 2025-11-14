@@ -6,9 +6,7 @@
 #include <vector>
 #include <string>
 #include "bookclass.h"
-#include "sqltest.h"
-//main windows:
-
+#include "sqlite3.h"
 WNDCLASS window = {};
 HWND hWnd;
 HWND TitleWindow; 
@@ -138,4 +136,7 @@ std::string GetTextFromInput(HWND hwnd){
 /*what im trying to do:
 check the textinput fields, the text inside will be added as params to a new book object which will be stored somewhere
 so we got the button, the three text fields and a new book object*/
+//sql & database settings
+sqlite3 * database;
+int rc;
 #endif

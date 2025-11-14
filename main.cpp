@@ -16,9 +16,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     BookNameInput = createBookNameInput(hInstance,hWnd);
     AuthorNameInput= createAuthorNameInput(hInstance,hWnd);
     BookId = createBookIdInput(hInstance,hWnd);
-    
     SendMessage(TitleWindow,WM_SETFONT,(WPARAM)hFont,TRUE);
     MSG msg;
+    rc = sqlite3_open("database.db",&database);
+    if(rc != SQLITE_OK){
+        MessageBox(hWnd,"database isnt opening","error",MB_ICONERROR);
+    }
     ShowWindow(hWnd,SW_SHOW);
     ShowWindow(TitleWindow,SW_SHOW);//child windows must be shown aswell, they dont appear automatically after their parents
     UpdateWindow(TitleWindow);

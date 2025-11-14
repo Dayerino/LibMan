@@ -48,6 +48,9 @@ LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wP
             break;
         }
         case WM_DESTROY:{
+            if(rc == SQLITE_OK){
+                sqlite3_close(database);
+            }
             PostQuitMessage(0);
             return 0;
         }
