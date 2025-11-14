@@ -137,6 +137,23 @@ std::string GetTextFromInput(HWND hwnd){
 check the textinput fields, the text inside will be added as params to a new book object which will be stored somewhere
 so we got the button, the three text fields and a new book object*/
 //sql & database settings
+const char* schema = "CREATE TABLE IF NOT EXISTS Books(bookName TEXT PRIMARY KEY,authorName TEXT,bookID INTEGER);";
 sqlite3 * database;
 int rc;
+void addBookToDB(sqlite3* db,BOOK & bookObj){
+    const char* sql = "INSERT INTO Books (bookName, authorName, bookID) VALUES (?,?,?);"; 
+    sqlite3_stmt* statement;
+    if(sqlite3_prepare_v2(db,sql,-1,&statement,nullptr)== SQLITE_OK){
+        sqlite3_bind_text(statement,1,bookObj.getBookTitle().c_str(),-1,SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement,2,bookObj.getBookAuthor().c_str(),-1,SQLITE_TRANSIENT);
+        sqlite3_bind_int(statement,3,bookObj.getBookID());
+    if(sqlite3_step(statement) != SQLITE_DONE){
+        MessageBox(hWnd,"insert error","error",MB_ICONERROR);
+        }
+    else{
+        MessageBox(hWnd,"insert successfull!","success",MB_ICONEXCLAMATION);
+    }
+    }
+    sqlite3_finalize(statement);
+}
 #endif

@@ -43,6 +43,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 newObj.setBookTitle(BN);
                 newObj.setBookAuthor(AN);
                 newObj.setBookID(bookId);
+                //inserting into the database
+                addBookToDB(database,newObj);
                 //clearing text
                 SetWindowText(BookNameInput, "");
                 SetWindowText(AuthorNameInput, "");
