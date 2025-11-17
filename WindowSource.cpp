@@ -3,14 +3,15 @@
 #include "BookInfoWnd.cpp"
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
     switch(message){
-        
         case WM_CREATE:{
         SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)Ptr);
         return 0;
     }
+    break;
         case WM_COMMAND:{
-            if(LOWORD(wParam)== 1001){
-                MessageBox(NULL,TEXT("button pressed! and buttons enabled!"),TEXT("not error"),MB_ICONEXCLAMATION);
+            if(LOWORD(wParam)== 1001){//show all books in the db
+                retrieveALLFromDB(database,booksVec);
+                InvalidateRect(crntbookshWnd,NULL,TRUE);
                 EnableWindow(RemoveBookBtn,TRUE);
                 EnableWindow(ModifyBookBtn,TRUE);
             }
@@ -77,7 +78,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
     }
         case WM_PAINT:{
             PAINTSTRUCT ps;
-            HDC hdc= BeginPaint(hWnd,&ps);
+            HDC hdc = BeginPaint(hWnd,&ps);
+            /*if(!booksVec.empty()){
+                int ypos = 20;
+                for(BOOK el: booksVec){
+                    automateBookShowing(el,hdc,10,ypos);
+                    ypos += 10;
+                }
+            }*/
             if(drawInputTexts){
             TextOut(hdc,enterBookNameXpos,enterBookNameYpos,enterBookName.c_str(),enterBookName.length());
             TextOut(hdc,enterAuthorNameXpos,enterAuthorNameYpos,enterAuthorName.c_str(),enterAuthorName.length());

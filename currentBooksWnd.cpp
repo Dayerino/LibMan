@@ -40,11 +40,16 @@ LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wP
             break;
         }
         case WM_PAINT:{
-            PAINTSTRUCT scrollStruct;
-            HDC scrollhdc = BeginPaint(crntbookshWnd,&scrollStruct);
-            SCROLLINFO scrlInf = {sizeof(scrlInf),SIF_POS};
-            GetScrollInfo(crntbookshWnd,SB_VERT,&scrlInf);
-            EndPaint(crntbookshWnd,&scrollStruct);
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(crntbookshWnd,&ps);
+            if(!booksVec.empty()){
+                int ypos = 20;
+                for(BOOK el: booksVec){
+                    automateBookShowing(el,hdc,10,ypos);
+                    ypos += 10;
+                }
+            }
+            EndPaint(crntbookshWnd,&ps);
             break;
         }
         case WM_DESTROY:{

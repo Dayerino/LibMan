@@ -7,10 +7,11 @@
 #include <string>
 #include "bookclass.h"
 #include "sqlite3.h"
+#include <vector>
 WNDCLASS window = {};
 HWND hWnd;
 HWND TitleWindow; 
-HWND CurrentBooksWindow;
+HWND crntbookshWnd;
 HWND BookInfoWindow;
 int * Ptr;
 void registerMainWindow(HINSTANCE hInstance);
@@ -140,6 +141,7 @@ so we got the button, the three text fields and a new book object*/
 const char* schema = "CREATE TABLE IF NOT EXISTS Books(bookName TEXT PRIMARY KEY,authorName TEXT,bookID INTEGER);";
 sqlite3 * database;
 int rc;
+std::vector<BOOK> booksVec;
 void addBookToDB(sqlite3* db,BOOK & bookObj){
     const char* sql = "INSERT INTO Books (bookName, authorName, bookID) VALUES (?,?,?);"; 
     sqlite3_stmt* statement;
@@ -155,5 +157,27 @@ void addBookToDB(sqlite3* db,BOOK & bookObj){
     }
     }
     sqlite3_finalize(statement);
+}
+/*show all books in the database*/
+void retrieveALLFromDB(sqlite3* db,std::vector<BOOK>& booksVec){
+    const char* sql = "SELECT * FROM Books";
+    sqlite3_stmt* statement;
+    if(sqlite3_prepare_v2(db,sql,-1,&statement,nullptr) == SQLITE_OK){
+        while(sqlite3_step(statement) == SQLITE_ROW){
+            const unsigned char* bookName = sqlite3_column_text(statement,0);
+            const unsigned char* AuthorName = sqlite3_column_text(statement,1);
+            int bookID = sqlite3_column_int(statement,2);
+            BOOK newObj(std::string(reinterpret_cast<const char*>(bookName)),std::string(reinterpret_cast<const char*>(AuthorName)),bookID);
+            booksVec.push_back(newObj);
+        }
+    }
+}
+/*modify a book */
+void modifyBookfromDB(sqlite3* db, BOOK & bookObj){
+
+}
+/*delete a book from db*/
+void deleteFromDB(sqlite3*db){
+
 }
 #endif

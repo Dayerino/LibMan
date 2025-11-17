@@ -6,7 +6,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     registerBookInfoWindow(hInstance);
     hWnd = createMainWindow(hInstance);
     TitleWindow = createTitleWindow(hInstance,hWnd);
-    CurrentBooksWindow = CreateCurrentBooksWindow(hInstance,hWnd);
+    crntbookshWnd = CreateCurrentBooksWindow(hInstance,hWnd);
     BookInfoWindow = CreateBookInfoWindow(hInstance,hWnd);
     ShowBooksBtn = CreateShowAllBooksButton(hInstance,hWnd);
     AddBookBtn = CreateAddBookButton(hInstance,hWnd);
@@ -21,8 +21,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     ShowWindow(hWnd,SW_SHOW);
     ShowWindow(TitleWindow,SW_SHOW);//child windows must be shown aswell, they dont appear automatically after their parents
     UpdateWindow(TitleWindow);
-    ShowWindow(CurrentBooksWindow,SW_SHOW);
-    UpdateWindow(CurrentBooksWindow);
+    ShowWindow(crntbookshWnd,SW_SHOW);
+    UpdateWindow(crntbookshWnd);
     ShowWindow(BookInfoWindow,SW_SHOW);
     UpdateWindow(BookInfoWindow);
     ShowWindow(BookInfoWindow,SW_SHOW);
