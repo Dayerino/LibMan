@@ -29,6 +29,10 @@ class BOOK{
         setBookAuthor(bookAuthor);
         setBookID(bookID);
     }
+    //equality operator for comparison
+    bool operator==(const BOOK&other)const{
+        return this->bookID == other.bookID;
+    }
     /*~BOOK(){
 
     }*/

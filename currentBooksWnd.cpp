@@ -42,13 +42,12 @@ LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wP
         case WM_PAINT:{
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(crntbookshWnd,&ps);
-            if(!booksVec.empty()){
-                int ypos = 20;
+            /*if(!booksVec.empty()){
                 for(BOOK el: booksVec){
-                    automateBookShowing(el,hdc,10,ypos);
-                    ypos += 10;
+                    automateBookShowing(el,hdc,10,addedBooksYPos);
+                    addedBooksYPos += 50;
                 }
-            }
+            }*/
             EndPaint(crntbookshWnd,&ps);
             break;
         }

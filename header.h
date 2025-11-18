@@ -8,6 +8,7 @@
 #include "bookclass.h"
 #include "sqlite3.h"
 #include <vector>
+#include <algorithm>
 WNDCLASS window = {};
 HWND hWnd;
 HWND TitleWindow; 
@@ -102,6 +103,7 @@ int removeBookBtnXpos = showBooksBtnXpos;
 int removeBookBtnYpos=modifyBookBtnYpos + BtnHeight;
 int submitBookBtnXpos= showBooksBtnXpos;
 int submitBookBtnYpos= removeBookBtnYpos + (windowHeight * 0.25);
+int  addedBooksYPos = 20;
 
 int enterBookNameXpos = showBooksBtnXpos + (windowWidth *0.03);
 int enterBookNameYpos = removeBookBtnYpos + (windowHeight * 0.11);
@@ -118,14 +120,16 @@ int BookIdBoxYpos = AuthorNameBoxYpos + (windowHeight *0.05);
 std:: string enterBookName = "Book Name:";
 std::string enterAuthorName = "Author Name:";
 std:: string enterBookId = "Book Id:";
+/*the function below might have to be remade*/
 void automateBookShowing(BOOK& bookObject,HDC hdc,int xpos,int ypos){
     TextOut(hdc,xpos,ypos,bookObject.getBookTitle().c_str(),bookObject.getBookTitle().length());
     TextOut(hdc,xpos,ypos +20,bookObject.getBookAuthor().c_str(),bookObject.getBookAuthor().length());
     int bookID= bookObject.getBookID();
     std::string bookIDstr = std::to_string(bookID);
-    TextOut(hdc,xpos,ypos + 40,bookIDstr.c_str(),bookIDstr.length());
+    TextOut(hdc,xpos,ypos + 35,bookIDstr.c_str(),bookIDstr.length());
 }
 bool drawInputTexts = false;
+/*get the texts from the user*/
 std::string GetTextFromInput(HWND hwnd){
     std:: string text;
     int txtLen = GetWindowTextLength(hwnd);
@@ -172,6 +176,30 @@ void retrieveALLFromDB(sqlite3* db,std::vector<BOOK>& booksVec){
         }
     }
 }
+/*book buttons measurements */
+int bookBtnXpos = CrntBooksWndXpos ;
+int bookBtnYpos = CrntBooksWndYpos *0.1;
+int bookBtnWidth = CrntBooksWndWidth;
+int bookBtnHeight= crntBooksWndHeight * 0.1;
+std::vector<BOOK>usedBooks;
+int bookBtnWparam = 5000;
+void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,std::vector<BOOK>&usedBooks){
+    retrieveALLFromDB(db,booksVec);
+    for(BOOK el:booksVec){
+        if(std::find(usedBooks.begin(),usedBooks.end(),el)== usedBooks.end()){//had to create equality operator to proprely check books
+        std::string bookName = el.getBookTitle();
+        std:: string AuthorName = el.getBookAuthor();
+        int bookID = el.getBookID();
+        std:: string BtnText = bookName + " | " + AuthorName;
+        CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT(BtnText.c_str()),WS_CHILD|WS_VISIBLE,bookBtnXpos,bookBtnYpos,bookBtnWidth,bookBtnHeight,ParentWindow,(HMENU)bookBtnWparam,window.hInstance,NULL);
+        bookBtnWparam++;
+        bookBtnYpos = bookBtnYpos + bookBtnHeight;
+        usedBooks.push_back(el);
+    }
+}
+}
+/*next up is to add button logic that displys the clicked book's information in the bookinfo window, must also make the db have a column for book description, which means
+i also have to make the primary key the book id instead of title*/
 /*modify a book */
 void modifyBookfromDB(sqlite3* db, BOOK & bookObj){
 
@@ -180,4 +208,5 @@ void modifyBookfromDB(sqlite3* db, BOOK & bookObj){
 void deleteFromDB(sqlite3*db){
 
 }
+
 #endif

@@ -10,7 +10,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
     break;
         case WM_COMMAND:{
             if(LOWORD(wParam)== 1001){//show all books in the db
-                retrieveALLFromDB(database,booksVec);
+                //retrieveALLFromDB(database,booksVec);
+                createBookButtons(crntbookshWnd,database,booksVec,usedBooks);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
                 EnableWindow(RemoveBookBtn,TRUE);
                 EnableWindow(ModifyBookBtn,TRUE);
@@ -169,7 +170,8 @@ HWND createBookIdInput(HINSTANCE hInstance, HWND MainWindow){
     return  CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER,BookIdBoxXpos,BookIdBoxYpos,150,25,MainWindow,(HMENU)3,window.hInstance,NULL);
 }
 
-
+/*test adding a button that has the book's name and shit, assign the button to a book object (in memory after being shown), so basically everytime i retrieve data from the db
+i assign each column of the table to a button and show it on the current books window screen, clicking the button displays the book's information/synopsis on the bookinfo window*/
 
 //extra shit that will be reused later
 /*while(!BookNameInput && !AuthorNameInput && !BookId){
