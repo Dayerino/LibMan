@@ -4,9 +4,8 @@ LRESULT CALLBACK BookInfoWindowProc(HWND bookinfohWnd,UINT message,WPARAM wParam
         case WM_PAINT:{
             PAINTSTRUCT Paint;
             HDC hdc = BeginPaint(bookinfohWnd,&Paint);
-            automateBookShowing(newObj,hdc,10,20);
+            automateBookShowing(foundBook,hdc,10,20);
             EndPaint(bookinfohWnd,&Paint);
-            break;
             return 0;
         }
         case WM_DESTROY:{
@@ -28,7 +27,7 @@ void registerBookInfoWindow(HINSTANCE hInstance){
     BookInfo.hCursor =LoadCursor(NULL,IDC_ARROW);//setting cursour inside window
     BookInfo.hbrBackground = NULL;
     BookInfo.lpszMenuName = NULL;//assigns what menu is linked to this window (might change later using LOADMenu after creating one)
-    BookInfo.lpszClassName = TEXT("BookInfoWindow");
+    BookInfo.lpszClassName = TEXT("bookinfohWnd");
     BookInfo.hbrBackground = CreateSolidBrush(RGB(222,222,222));
     if(!RegisterClass(&BookInfo)){
         MessageBox(NULL,TEXT("book info window class registration failed"),TEXT("Error"),MB_ICONERROR);

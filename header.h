@@ -9,11 +9,12 @@
 #include "sqlite3.h"
 #include <vector>
 #include <algorithm>
+#include "unordered_map"
 WNDCLASS window = {};
 HWND hWnd;
 HWND TitleWindow; 
 HWND crntbookshWnd;
-HWND BookInfoWindow;
+HWND bookinfohWnd;
 int * Ptr;
 void registerMainWindow(HINSTANCE hInstance);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -182,8 +183,10 @@ int bookBtnYpos = CrntBooksWndYpos *0.1;
 int bookBtnWidth = CrntBooksWndWidth;
 int bookBtnHeight= crntBooksWndHeight * 0.1;
 std::vector<BOOK>usedBooks;
+std::unordered_map<int, BOOK>BooksMap;
+BOOK foundBook;
 int bookBtnWparam = 5000;
-void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,std::vector<BOOK>&usedBooks){
+void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,std::vector<BOOK>&usedBooks,std::unordered_map<int,BOOK>&BooksMap){
     retrieveALLFromDB(db,booksVec);
     for(BOOK el:booksVec){
         if(std::find(usedBooks.begin(),usedBooks.end(),el)== usedBooks.end()){//had to create equality operator to proprely check books
@@ -192,12 +195,15 @@ void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,s
         int bookID = el.getBookID();
         std:: string BtnText = bookName + " | " + AuthorName;
         CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT(BtnText.c_str()),WS_CHILD|WS_VISIBLE,bookBtnXpos,bookBtnYpos,bookBtnWidth,bookBtnHeight,ParentWindow,(HMENU)bookBtnWparam,window.hInstance,NULL);
+        /*store the added book in a map, the key is the wparam and the value is the book object itself, to retrieve it when the button is pressed*/
+        BooksMap.emplace(bookBtnWparam,el);
         bookBtnWparam++;
         bookBtnYpos = bookBtnYpos + bookBtnHeight;
         usedBooks.push_back(el);
     }
 }
 }
+
 /*next up is to add button logic that displys the clicked book's information in the bookinfo window, must also make the db have a column for book description, which means
 i also have to make the primary key the book id instead of title*/
 /*modify a book */

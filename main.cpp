@@ -7,7 +7,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     hWnd = createMainWindow(hInstance);
     TitleWindow = createTitleWindow(hInstance,hWnd);
     crntbookshWnd = CreateCurrentBooksWindow(hInstance,hWnd);
-    BookInfoWindow = CreateBookInfoWindow(hInstance,hWnd);
+    bookinfohWnd = CreateBookInfoWindow(hInstance,hWnd);
     ShowBooksBtn = CreateShowAllBooksButton(hInstance,hWnd);
     AddBookBtn = CreateAddBookButton(hInstance,hWnd);
     ModifyBookBtn=CreateModifyBookButton(hInstance,hWnd);
@@ -23,9 +23,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     UpdateWindow(TitleWindow);
     ShowWindow(crntbookshWnd,SW_SHOW);
     UpdateWindow(crntbookshWnd);
-    ShowWindow(BookInfoWindow,SW_SHOW);
-    UpdateWindow(BookInfoWindow);
-    ShowWindow(BookInfoWindow,SW_SHOW);
+    ShowWindow(bookinfohWnd,SW_SHOW);
+    UpdateWindow(bookinfohWnd);
+    ShowWindow(bookinfohWnd,SW_SHOW);
     UpdateWindow(hWnd);
     //sqlite things:
     rc = sqlite3_open("database.sqlite",&database);

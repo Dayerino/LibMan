@@ -11,7 +11,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
         case WM_COMMAND:{
             if(LOWORD(wParam)== 1001){//show all books in the db
                 //retrieveALLFromDB(database,booksVec);
-                createBookButtons(crntbookshWnd,database,booksVec,usedBooks);
+                createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
                 EnableWindow(RemoveBookBtn,TRUE);
                 EnableWindow(ModifyBookBtn,TRUE);
@@ -19,7 +19,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
             if(LOWORD(wParam)== 1002){
                 drawInputTexts = true;
                 InvalidateRect(hWnd,NULL,TRUE);
-                InvalidateRect(BookInfoWindow,NULL,TRUE);
+                //InvalidateRect(bookinfohWnd,NULL,TRUE);
                 ShowWindow(BookNameInput,SW_SHOW);
                 ShowWindow(AuthorNameInput,SW_SHOW);
                 ShowWindow(BookId,SW_SHOW);
@@ -136,7 +136,7 @@ HWND CreateCurrentBooksWindow(HINSTANCE hInstance,HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("CurrentBooksWindow"),TEXT(""),WS_CHILD|WS_BORDER|WS_VSCROLL,CrntBooksWndXpos,CrntBooksWndYpos,CrntBooksWndWidth,crntBooksWndHeight,MainWindow,NULL,window.hInstance,NULL);
 }
 HWND CreateBookInfoWindow(HINSTANCE hInstance,HWND MainWindow){
-    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BookInfoWindow"),TEXT("BookInfo"),WS_CHILD|WS_BORDER|WS_DISABLED,bookInfoWndXpos,bookInfoWndYpos,bookInfoWndWidth,bookInfoWndHeight,MainWindow,NULL,window.hInstance,NULL);
+    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("bookinfohWnd"),TEXT("BookInfo"),WS_CHILD|WS_BORDER|WS_DISABLED,bookInfoWndXpos,bookInfoWndYpos,bookInfoWndWidth,bookInfoWndHeight,MainWindow,NULL,window.hInstance,NULL);
 }
 
 //create buttons

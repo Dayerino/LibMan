@@ -1,6 +1,14 @@
 #include "header.h"
 LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wParam, LPARAM lParam){
     switch(message){
+        case WM_COMMAND:{
+            if(LOWORD(wParam)>=5000){//book buttons start from 5000 and go on from here
+                foundBook = BooksMap.at(wParam);
+                UpdateWindow(bookinfohWnd);
+                InvalidateRect(bookinfohWnd,NULL,TRUE);
+                UpdateWindow(bookinfohWnd);
+            }
+        }
     case WM_CREATE:{
         SCROLLINFO scrl = { sizeof(scrl)};
         scrl.nMin = 0;
