@@ -23,6 +23,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(BookNameInput,SW_SHOW);
                 ShowWindow(AuthorNameInput,SW_SHOW);
                 ShowWindow(BookId,SW_SHOW);
+                ShowWindow(BookDescriptionInput,SW_SHOW);
                 EnableWindow(RemoveBookBtn,TRUE);
                 EnableWindow(ModifyBookBtn,TRUE);
                 }
@@ -38,29 +39,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(BookNameInput,SW_HIDE);
                 ShowWindow(AuthorNameInput,SW_HIDE);
                 ShowWindow(BookId,SW_HIDE);
+                ShowWindow(BookDescriptionInput,SW_HIDE);
                 std::string BN= GetTextFromInput(BookNameInput);
                 std::string AN=GetTextFromInput(AuthorNameInput);
                 std:: string bID=GetTextFromInput(BookId);
+                std:: string BD = GetTextFromInput(BookDescriptionInput);
                 int bookId = std::stoi(bID);
                 newObj.setBookTitle(BN);
                 newObj.setBookAuthor(AN);
                 newObj.setBookID(bookId);
+                newObj.setDescription(BD);
                 //inserting into the database
                 addBookToDB(database,newObj);
                 //clearing text
                 SetWindowText(BookNameInput, "");
                 SetWindowText(AuthorNameInput, "");
                 SetWindowText(BookId, "");
+                SetWindowText(BookDescriptionInput,"");
                 InvalidateRect(hWnd,NULL,TRUE);
                 UpdateWindow(hWnd);
             }
             if(HIWORD(wParam) == EN_CHANGE){
                 int changedInput = LOWORD(wParam);
-                if(changedInput == 1 || changedInput == 2 || changedInput == 3){//1 2 3 are the wParams of the text fields
+                if(changedInput == 1 || changedInput == 2 || changedInput == 3 || changedInput == 4){//1 2 3 4 are the wParams of the text fields
                     int BookNameTxtLen = GetWindowTextLength(BookNameInput);
                     int AuthorNameTxtLen=GetWindowTextLength(AuthorNameInput);
                     int bookIDTxtLen = GetWindowTextLength(BookId);
-                    if(BookNameTxtLen >0 && AuthorNameTxtLen>0 && bookIDTxtLen >0){
+                    int bookDescriptionTxtLen = GetWindowTextLength(BookDescriptionInput);
+                    if(BookNameTxtLen >0 && AuthorNameTxtLen>0 && bookIDTxtLen >0 && bookDescriptionTxtLen>0){
                         EnableWindow(SubmitNewBookBtn,TRUE);
                     }else{
                         EnableWindow(SubmitNewBookBtn,FALSE);
@@ -91,10 +97,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
             TextOut(hdc,enterBookNameXpos,enterBookNameYpos,enterBookName.c_str(),enterBookName.length());
             TextOut(hdc,enterAuthorNameXpos,enterAuthorNameYpos,enterAuthorName.c_str(),enterAuthorName.length());
             TextOut(hdc,enterBookIdXpos,enterBookIdYpos,enterBookId.c_str(),enterBookId.length());
+            TextOut(hdc,enterBookDescriptionXpos,enterBookDescriptionYpos,enterDescription.c_str(),enterDescription.length());
         }   else{
             TextOut(hdc,enterBookNameXpos,enterBookNameYpos,"",0);
             TextOut(hdc,enterAuthorNameXpos,enterAuthorNameYpos,"",0);
             TextOut(hdc,enterBookIdXpos,enterBookIdYpos,"",0);
+            TextOut(hdc,enterBookDescriptionXpos,enterBookDescriptionYpos,"",0);
         }
             EndPaint(hWnd,&ps);
             break;
@@ -168,6 +176,9 @@ HWND createAuthorNameInput(HINSTANCE hInstance, HWND MainWindow){
 }
 HWND createBookIdInput(HINSTANCE hInstance, HWND MainWindow){
     return  CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER,BookIdBoxXpos,BookIdBoxYpos,150,25,MainWindow,(HMENU)3,window.hInstance,NULL);
+}
+HWND createBookDescriptionInput(HINSTANCE hInstance,HWND MainWindow){
+    return CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER,bookDescriptionBoxXpos,bookDescriptionBoxYpos,150,50,MainWindow,(HMENU)4,window.hInstance,NULL);
 }
 
 /*test adding a button that has the book's name and shit, assign the button to a book object (in memory after being shown), so basically everytime i retrieve data from the db

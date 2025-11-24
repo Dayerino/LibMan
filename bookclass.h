@@ -4,6 +4,7 @@ class BOOK{
     std::string bookTitle;
     std::string bookAuthor;
     int bookID;
+    std::string bookDescription;
     public:
     void setBookTitle(std::string arg){
         this->bookTitle = arg;
@@ -14,6 +15,9 @@ class BOOK{
     void setBookID(int arg){
         this->bookID = arg;
     }
+    void setDescription(std::string arg){
+        this->bookDescription = arg;
+    }
     std::string getBookTitle(){
         return this->bookTitle;
     }
@@ -23,11 +27,15 @@ class BOOK{
     int getBookID(){
         return this->bookID;
     }
+    std::string getBookDescription(){
+        return this->bookDescription;
+    }
     BOOK(){};
-    BOOK(std::string bookTitle,std::string bookAuthor,int bookID){
+    BOOK(std::string bookTitle,std::string bookAuthor,int bookID,std::string bookDescription){
         setBookTitle(bookTitle);
         setBookAuthor(bookAuthor);
         setBookID(bookID);
+        setDescription(bookDescription);
     }
     //equality operator for comparison
     bool operator==(const BOOK&other)const{

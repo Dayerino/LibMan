@@ -47,6 +47,7 @@ void registerBtnWindow(HINSTANCE hInstance);
 HWND BookNameInput;
 HWND AuthorNameInput;
 HWND BookId;
+HWND BookDescriptionInput;
 BOOK newObj;
 std::string storedBookName;
 std::string storedAuthorName;
@@ -54,7 +55,7 @@ int storedBookId;
 HWND createBookNameInput(HINSTANCE hInstance,HWND MainWindow);
 HWND createAuthorNameInput(HINSTANCE hInstance, HWND MainWindow);
 HWND createBookIdInput(HINSTANCE hInstance, HWND MainWindow);
-
+HWND createBookDescriptionInput(HINSTANCE hInstance,HWND MainWindow);
 //
 
 HFONT hFont = CreateFont(
@@ -103,7 +104,7 @@ int modifyBookBtnYpos = addBookBtnYpos+ BtnHeight ;
 int removeBookBtnXpos = showBooksBtnXpos;
 int removeBookBtnYpos=modifyBookBtnYpos + BtnHeight;
 int submitBookBtnXpos= showBooksBtnXpos;
-int submitBookBtnYpos= removeBookBtnYpos + (windowHeight * 0.25);
+int submitBookBtnYpos= removeBookBtnYpos + (windowHeight * 0.4);
 int  addedBooksYPos = 20;
 
 int enterBookNameXpos = showBooksBtnXpos + (windowWidth *0.03);
@@ -116,18 +117,24 @@ int AuthorNameBoxXpos= enterAuthorNameXpos + (windowWidth * 0.17);
 int AuthorNameBoxYpos =BookNameInputBoxYpos + (windowHeight *0.05);
 int enterBookIdXpos=enterBookNameXpos;
 int enterBookIdYpos = AuthorNameBoxYpos + (windowHeight * 0.06);
+int enterBookDescriptionXpos = enterBookNameXpos;
+int enterBookDescriptionYpos = enterBookIdYpos + (windowHeight * 0.06);
 int BookIdBoxXpos= enterBookIdXpos + (windowWidth * 0.17);
 int BookIdBoxYpos = AuthorNameBoxYpos + (windowHeight *0.05);
+int bookDescriptionBoxXpos =  enterBookDescriptionXpos + (windowWidth * 0.17);
+int bookDescriptionBoxYpos = BookIdBoxYpos + (windowHeight *0.05);
 std:: string enterBookName = "Book Name:";
 std::string enterAuthorName = "Author Name:";
 std:: string enterBookId = "Book Id:";
+std:: string enterDescription = "Description:";
 /*the function below might have to be remade*/
 void automateBookShowing(BOOK& bookObject,HDC hdc,int xpos,int ypos){
-    TextOut(hdc,xpos,ypos,bookObject.getBookTitle().c_str(),bookObject.getBookTitle().length());
+    /*TextOut(hdc,xpos,ypos,bookObject.getBookTitle().c_str(),bookObject.getBookTitle().length());
     TextOut(hdc,xpos,ypos +20,bookObject.getBookAuthor().c_str(),bookObject.getBookAuthor().length());
     int bookID= bookObject.getBookID();
     std::string bookIDstr = std::to_string(bookID);
-    TextOut(hdc,xpos,ypos + 35,bookIDstr.c_str(),bookIDstr.length());
+    TextOut(hdc,xpos,ypos + 35,bookIDstr.c_str(),bookIDstr.length());*/
+    TextOut(hdc,xpos,ypos,bookObject.getBookDescription().c_str(),bookObject.getBookDescription().length());
 }
 bool drawInputTexts = false;
 /*get the texts from the user*/
@@ -143,17 +150,18 @@ std::string GetTextFromInput(HWND hwnd){
 check the textinput fields, the text inside will be added as params to a new book object which will be stored somewhere
 so we got the button, the three text fields and a new book object*/
 //sql & database settings
-const char* schema = "CREATE TABLE IF NOT EXISTS Books(bookName TEXT PRIMARY KEY,authorName TEXT,bookID INTEGER);";
+const char* schema = "CREATE TABLE IF NOT EXISTS Books(bookName TEXT PRIMARY KEY,authorName TEXT,bookID INTEGER,BookDescription TEXT);";
 sqlite3 * database;
 int rc;
 std::vector<BOOK> booksVec;
 void addBookToDB(sqlite3* db,BOOK & bookObj){
-    const char* sql = "INSERT INTO Books (bookName, authorName, bookID) VALUES (?,?,?);"; 
+    const char* sql = "INSERT INTO Books (bookName, authorName, bookID,BookDescription) VALUES (?,?,?,?);"; 
     sqlite3_stmt* statement;
     if(sqlite3_prepare_v2(db,sql,-1,&statement,nullptr)== SQLITE_OK){
         sqlite3_bind_text(statement,1,bookObj.getBookTitle().c_str(),-1,SQLITE_TRANSIENT);
         sqlite3_bind_text(statement,2,bookObj.getBookAuthor().c_str(),-1,SQLITE_TRANSIENT);
         sqlite3_bind_int(statement,3,bookObj.getBookID());
+        sqlite3_bind_text(statement,4,bookObj.getBookDescription().c_str(),-1,SQLITE_TRANSIENT);
     if(sqlite3_step(statement) != SQLITE_DONE){
         MessageBox(hWnd,"insert error","error",MB_ICONERROR);
         }
@@ -172,7 +180,8 @@ void retrieveALLFromDB(sqlite3* db,std::vector<BOOK>& booksVec){
             const unsigned char* bookName = sqlite3_column_text(statement,0);
             const unsigned char* AuthorName = sqlite3_column_text(statement,1);
             int bookID = sqlite3_column_int(statement,2);
-            BOOK newObj(std::string(reinterpret_cast<const char*>(bookName)),std::string(reinterpret_cast<const char*>(AuthorName)),bookID);
+            const unsigned char* bookDescription= sqlite3_column_text(statement,3);
+            BOOK newObj(std::string(reinterpret_cast<const char*>(bookName)),std::string(reinterpret_cast<const char*>(AuthorName)),bookID,std::string(reinterpret_cast<const char*>(bookDescription)));
             booksVec.push_back(newObj);
         }
     }
