@@ -11,9 +11,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
         case WM_COMMAND:{
             if(LOWORD(wParam)== 1001){//show all books in the db
                 //retrieveALLFromDB(database,booksVec);
-                createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap);
+                createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
-                EnableWindow(RemoveBookBtn,TRUE);
                 EnableWindow(ModifyBookBtn,TRUE);
             }
             if(LOWORD(wParam)== 1002){
@@ -24,7 +23,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(AuthorNameInput,SW_SHOW);
                 ShowWindow(BookId,SW_SHOW);
                 ShowWindow(BookDescriptionInput,SW_SHOW);
-                EnableWindow(RemoveBookBtn,TRUE);
                 EnableWindow(ModifyBookBtn,TRUE);
                 }
             
@@ -32,7 +30,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 MessageBox(NULL,TEXT("button pressed!"),TEXT("not error"),MB_ICONEXCLAMATION);
             }
             if(LOWORD(wParam)== 1004){
-                MessageBox(NULL,TEXT("button pressed!"),TEXT("not error"),MB_ICONEXCLAMATION);
+                    std::string booktitle = foundBook.getBookTitle();
+                    deleteFromDB(database,booktitle);
+                    BooksMap.erase(wParam);
+                    booksVec.erase(std::remove(booksVec.begin(),booksVec.end(),foundBook),booksVec.end());
+                    usedBooks.erase(std::remove(usedBooks.begin(),usedBooks.end(),foundBook),usedBooks.end());
+                    createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
+                    InvalidateRect(crntbookshWnd,NULL,TRUE);
             }
             if(LOWORD(wParam) == 1005){
                 drawInputTexts = false;

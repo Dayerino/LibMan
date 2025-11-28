@@ -193,9 +193,14 @@ int bookBtnWidth = CrntBooksWndWidth;
 int bookBtnHeight= crntBooksWndHeight * 0.1;
 std::vector<BOOK>usedBooks;
 std::unordered_map<int, BOOK>BooksMap;
+struct bookWindows{
+    int wParam;
+    HWND BTNWINDOW;
+};
+std::vector<bookWindows> bookbuttons;
 BOOK foundBook;
 int bookBtnWparam = 5000;
-void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,std::vector<BOOK>&usedBooks,std::unordered_map<int,BOOK>&BooksMap){
+void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,std::vector<BOOK>&usedBooks,std::unordered_map<int,BOOK>&BooksMap,std::vector<bookWindows>&bookBtnsVec){
     retrieveALLFromDB(db,booksVec);
     for(BOOK el:booksVec){
         if(std::find(usedBooks.begin(),usedBooks.end(),el)== usedBooks.end()){//had to create equality operator to proprely check books
@@ -203,9 +208,12 @@ void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,s
         std:: string AuthorName = el.getBookAuthor();
         int bookID = el.getBookID();
         std:: string BtnText = bookName + " | " + AuthorName;
-        CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT(BtnText.c_str()),WS_CHILD|WS_VISIBLE,bookBtnXpos,bookBtnYpos,bookBtnWidth,bookBtnHeight,ParentWindow,(HMENU)bookBtnWparam,window.hInstance,NULL);
+        //problem with this line
+        HWND BTNWINDOW = CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT(BtnText.c_str()),WS_CHILD|WS_VISIBLE,bookBtnXpos,bookBtnYpos,bookBtnWidth,bookBtnHeight,ParentWindow,(HMENU)bookBtnWparam,window.hInstance,NULL);
         /*store the added book in a map, the key is the wparam and the value is the book object itself, to retrieve it when the button is pressed*/
         BooksMap.emplace(bookBtnWparam,el);
+        bookWindows newWindow = {bookBtnWparam,BTNWINDOW};
+        bookBtnsVec.push_back(newWindow);
         bookBtnWparam++;
         bookBtnYpos = bookBtnYpos + bookBtnHeight;
         usedBooks.push_back(el);
@@ -220,8 +228,21 @@ void modifyBookfromDB(sqlite3* db, BOOK & bookObj){
 
 }
 /*delete a book from db*/
-void deleteFromDB(sqlite3*db){
+//basically, remove the book from the db, then reshow buttons
 
-}
+void deleteFromDB(sqlite3*db,std::string BookTitle){
+    const char* sql = "DELETE FROM Books WHERE bookName = ?";
+    sqlite3_stmt* statement;
+        if(sqlite3_prepare_v2(db,sql,-1,&statement,nullptr)== SQLITE_OK){
+            sqlite3_bind_text(statement,1,BookTitle.c_str(),-1,SQLITE_TRANSIENT);
+            if(sqlite3_step(statement) != SQLITE_DONE){
+                MessageBox(hWnd,"deletion error","error",MB_ICONERROR);
+            }
+            else{
+                MessageBox(hWnd,"book deleted!","success",MB_ICONINFORMATION);
+            }
+        }
+    }
+
 
 #endif

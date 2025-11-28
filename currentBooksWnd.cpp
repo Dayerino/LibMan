@@ -3,12 +3,17 @@ LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wP
     switch(message){
         case WM_COMMAND:{
             if(LOWORD(wParam)>=5000){//book buttons start from 5000 and go on from here
-                foundBook = BooksMap.at(wParam);
+                auto iterator = BooksMap.find(wParam);
+                if(iterator !=BooksMap.end()){
+                    foundBook = iterator->second;
+                }
+                EnableWindow(RemoveBookBtn,TRUE);
                 UpdateWindow(bookinfohWnd);
                 InvalidateRect(bookinfohWnd,NULL,TRUE);
                 UpdateWindow(bookinfohWnd);
             }
         }
+        
     case WM_CREATE:{
         SCROLLINFO scrl = { sizeof(scrl)};
         scrl.nMin = 0;
