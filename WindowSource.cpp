@@ -36,6 +36,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                     BooksMap.erase(wParam);
                     booksVec.erase(std::remove(booksVec.begin(),booksVec.end(),foundBook),booksVec.end());
                     usedBooks.erase(std::remove(usedBooks.begin(),usedBooks.end(),foundBook),usedBooks.end());
+                    bookBtnYpos = CrntBooksWndYpos *0.1;
                     createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
                     InvalidateRect(crntbookshWnd,NULL,TRUE);
             }

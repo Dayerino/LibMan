@@ -221,9 +221,16 @@ void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,s
     }
 }
 }
+void shiftBTNS(HWND ParentWindow,HWND BTN,std::vector<bookWindows>&bookButtonsVec){
+    auto it = std::find_if(bookButtonsVec.begin(),bookButtonsVec.end(),[BTN](const bookWindows & bookwnd){
+        return bookwnd.BTNWINDOW == BTN;
+    });
+    if(it != bookButtonsVec.end()){
 
-/*next up is to add button logic that displys the clicked book's information in the bookinfo window, must also make the db have a column for book description, which means
-i also have to make the primary key the book id instead of title*/
+        HWND btn2shift = it->BTNWINDOW;
+    }
+}
+
 /*modify a book */
 void modifyBookfromDB(sqlite3* db, BOOK & bookObj){
 
@@ -250,9 +257,25 @@ void deleteBookBTN(std::vector<bookWindows>&BookBTNS,int wParam){
     });
     if(it != BookBTNS.end()){
         HWND windowTodestroy = it->BTNWINDOW;
+        /*grab the y pos of the btn, if its the last element do nothing, if not move the element that's after it to its position, and the same to the one after that, until you
+        reach the end*/
+        size_t index = std::distance(BookBTNS.begin(),it);
+        size_t vecSize = BookBTNS.size();
+        if(index < BookBTNS.size()-1){//check if the index of the element is NOT the last element
+        for(size_t i =  index; i<vecSize - 1;i++){
+        RECT rect;
+        GetWindowRect(BookBTNS[i].BTNWINDOW,&rect);
+        POINT pt = {rect.left,rect.top};
+        MapWindowPoints(HWND_DESKTOP,crntbookshWnd,&pt,1);
+        int y = pt.y;
+        int x = pt.x;
+            SetWindowPos(BookBTNS[i+1].BTNWINDOW,HWND_TOP,x,y,0,0,SWP_NOSIZE);
+        }
+    }
         if(DestroyWindow(windowTodestroy)){
         BookBTNS.erase(it);
-        MessageBox(hWnd,"Button Window Removed","success",MB_ICONINFORMATION);
+        SetWindowText(bookinfohWnd,"");
+        InvalidateRect(bookinfohWnd,NULL,TRUE);
         }
     }
 }
