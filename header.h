@@ -197,6 +197,7 @@ struct bookWindows{
     int wParam;
     HWND BTNWINDOW;
 };
+int selectedBookWparam;
 std::vector<bookWindows> bookbuttons;
 BOOK foundBook;
 int bookBtnWparam = 5000;
@@ -243,6 +244,18 @@ void deleteFromDB(sqlite3*db,std::string BookTitle){
             }
         }
     }
-
-
+void deleteBookBTN(std::vector<bookWindows>&BookBTNS,int wParam){
+    auto it = std::find_if(BookBTNS.begin(),BookBTNS.end(),[wParam](const bookWindows& bookwnd){
+        return bookwnd.wParam == wParam; 
+    });
+    if(it != BookBTNS.end()){
+        HWND windowTodestroy = it->BTNWINDOW;
+        if(DestroyWindow(windowTodestroy)){
+        BookBTNS.erase(it);
+        MessageBox(hWnd,"Button Window Removed","success",MB_ICONINFORMATION);
+        }
+    }
+}
+/*[wParam](const bookWindows& bookwnd){
+        return bookwnd.wParam == wParam; }); lambda function used here */
 #endif

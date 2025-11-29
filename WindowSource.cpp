@@ -32,6 +32,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
             if(LOWORD(wParam)== 1004){
                     std::string booktitle = foundBook.getBookTitle();
                     deleteFromDB(database,booktitle);
+                    deleteBookBTN(bookbuttons,selectedBookWparam);
                     BooksMap.erase(wParam);
                     booksVec.erase(std::remove(booksVec.begin(),booksVec.end(),foundBook),booksVec.end());
                     usedBooks.erase(std::remove(usedBooks.begin(),usedBooks.end(),foundBook),usedBooks.end());

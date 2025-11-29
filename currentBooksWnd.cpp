@@ -6,6 +6,7 @@ LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wP
                 auto iterator = BooksMap.find(wParam);
                 if(iterator !=BooksMap.end()){
                     foundBook = iterator->second;
+                    selectedBookWparam = wParam;
                 }
                 EnableWindow(RemoveBookBtn,TRUE);
                 UpdateWindow(bookinfohWnd);
