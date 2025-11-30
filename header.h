@@ -274,8 +274,7 @@ void deleteBookBTN(std::vector<bookWindows>&BookBTNS,int wParam){
     }
         if(DestroyWindow(windowTodestroy)){
         BookBTNS.erase(it);
-        SetWindowText(bookinfohWnd,"");
-        InvalidateRect(bookinfohWnd,NULL,TRUE);
+        
         }
     }
 }

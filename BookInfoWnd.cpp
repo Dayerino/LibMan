@@ -4,7 +4,11 @@ LRESULT CALLBACK BookInfoWindowProc(HWND bookinfohWnd,UINT message,WPARAM wParam
         case WM_PAINT:{
             PAINTSTRUCT Paint;
             HDC hdc = BeginPaint(bookinfohWnd,&Paint);
+            if(foundBook.getBookDescription()!= ""){
             automateBookShowing(foundBook,hdc,10,20);
+        }else{
+            TextOut(hdc,10,20,"",0);
+        }
             EndPaint(bookinfohWnd,&Paint);
             return 0;
         }

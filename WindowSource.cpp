@@ -37,7 +37,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                     booksVec.erase(std::remove(booksVec.begin(),booksVec.end(),foundBook),booksVec.end());
                     usedBooks.erase(std::remove(usedBooks.begin(),usedBooks.end(),foundBook),usedBooks.end());
                     bookBtnYpos = CrntBooksWndYpos *0.1;
-                    createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
+                    InvalidateRect(bookinfohWnd,NULL,TRUE);
                     InvalidateRect(crntbookshWnd,NULL,TRUE);
             }
             if(LOWORD(wParam) == 1005){
@@ -63,6 +63,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 SetWindowText(BookId, "");
                 SetWindowText(BookDescriptionInput,"");
                 InvalidateRect(hWnd,NULL,TRUE);
+                createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
+                InvalidateRect(crntbookshWnd,NULL,TRUE);
                 UpdateWindow(hWnd);
             }
             if(HIWORD(wParam) == EN_CHANGE){
