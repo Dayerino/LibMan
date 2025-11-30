@@ -17,6 +17,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     AuthorNameInput= createAuthorNameInput(hInstance,hWnd);
     BookId = createBookIdInput(hInstance,hWnd);
     BookDescriptionInput = createBookDescriptionInput(hInstance,hWnd);
+    descriptionWindow = createBookDescriptionWindow(hInstance,bookinfohWnd);
     SendMessage(TitleWindow,WM_SETFONT,(WPARAM)hFont,TRUE);
     MSG msg;
     ShowWindow(hWnd,SW_SHOW);

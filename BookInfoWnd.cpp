@@ -5,9 +5,9 @@ LRESULT CALLBACK BookInfoWindowProc(HWND bookinfohWnd,UINT message,WPARAM wParam
             PAINTSTRUCT Paint;
             HDC hdc = BeginPaint(bookinfohWnd,&Paint);
             if(foundBook.getBookDescription()!= ""){
-            automateBookShowing(foundBook,hdc,10,20);
+            SetWindowText(descriptionWindow,foundBook.getBookDescription().c_str());
         }else{
-            TextOut(hdc,10,20,"",0);
+            SetWindowText(descriptionWindow,"");
         }
             EndPaint(bookinfohWnd,&Paint);
             return 0;

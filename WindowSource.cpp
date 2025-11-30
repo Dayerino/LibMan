@@ -37,8 +37,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                     booksVec.erase(std::remove(booksVec.begin(),booksVec.end(),foundBook),booksVec.end());
                     usedBooks.erase(std::remove(usedBooks.begin(),usedBooks.end(),foundBook),usedBooks.end());
                     bookBtnYpos = CrntBooksWndYpos *0.1;
+                    SetWindowText(descriptionWindow,"");
                     InvalidateRect(bookinfohWnd,NULL,TRUE);
                     InvalidateRect(crntbookshWnd,NULL,TRUE);
+                    UpdateWindow(bookinfohWnd);
+                    UpdateWindow(crntbookshWnd);
             }
             if(LOWORD(wParam) == 1005){
                 drawInputTexts = false;
@@ -149,10 +152,10 @@ HWND createTitleWindow(HINSTANCE hInstance,HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("STATIC"),TEXT("Library Manager"),WS_CHILD|WS_BORDER,TitleWindowXpos,TitleWindowYpos,TitleWindowWidth,TitleWindowHeight,MainWindow,NULL,window.hInstance,NULL);
 }
 HWND CreateCurrentBooksWindow(HINSTANCE hInstance,HWND MainWindow){
-    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("CurrentBooksWindow"),TEXT(""),WS_CHILD|WS_BORDER|WS_VSCROLL,CrntBooksWndXpos,CrntBooksWndYpos,CrntBooksWndWidth,crntBooksWndHeight,MainWindow,NULL,window.hInstance,NULL);
+    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("CurrentBooksWindow"),TEXT(""),WS_CHILD|WS_BORDER|ES_AUTOVSCROLL,CrntBooksWndXpos,CrntBooksWndYpos,CrntBooksWndWidth,crntBooksWndHeight,MainWindow,NULL,window.hInstance,NULL);
 }
 HWND CreateBookInfoWindow(HINSTANCE hInstance,HWND MainWindow){
-    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("bookinfohWnd"),TEXT("BookInfo"),WS_CHILD|WS_BORDER|WS_DISABLED,bookInfoWndXpos,bookInfoWndYpos,bookInfoWndWidth,bookInfoWndHeight,MainWindow,NULL,window.hInstance,NULL);
+    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("bookinfohWnd"),TEXT("BookInfo"),WS_CHILD|WS_BORDER|WS_DISABLED|ES_MULTILINE,bookInfoWndXpos,bookInfoWndYpos,bookInfoWndWidth,bookInfoWndHeight,MainWindow,NULL,window.hInstance,NULL);
 }
 
 //create buttons
@@ -177,18 +180,20 @@ AuthorNameInput = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,Autho
  BookId = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,BookIdBoxXpos,BookIdBoxYpos,150,25,hWnd,(HMENU)3,window.hInstance,NULL);
 */
 HWND createBookNameInput(HINSTANCE hInstance,HWND MainWindow){
-    return CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER,BookNameInputBoxXpos,BookNameInputBoxYpos,150,25,MainWindow,(HMENU)1,window.hInstance,NULL);
+    return CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER|ES_AUTOVSCROLL|ES_WANTRETURN,BookNameInputBoxXpos,BookNameInputBoxYpos,150,25,MainWindow,(HMENU)1,window.hInstance,NULL);
 }
 HWND createAuthorNameInput(HINSTANCE hInstance, HWND MainWindow){
-    return  CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER,AuthorNameBoxXpos,AuthorNameBoxYpos,150,25,MainWindow,(HMENU)2,window.hInstance,NULL);
+    return  CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER|ES_AUTOVSCROLL|ES_WANTRETURN,AuthorNameBoxXpos,AuthorNameBoxYpos,150,25,MainWindow,(HMENU)2,window.hInstance,NULL);
 }
 HWND createBookIdInput(HINSTANCE hInstance, HWND MainWindow){
-    return  CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER,BookIdBoxXpos,BookIdBoxYpos,150,25,MainWindow,(HMENU)3,window.hInstance,NULL);
+    return  CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER|ES_AUTOVSCROLL|ES_WANTRETURN,BookIdBoxXpos,BookIdBoxYpos,150,25,MainWindow,(HMENU)3,window.hInstance,NULL);
 }
 HWND createBookDescriptionInput(HINSTANCE hInstance,HWND MainWindow){
-    return CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER,bookDescriptionBoxXpos,bookDescriptionBoxYpos,150,50,MainWindow,(HMENU)4,window.hInstance,NULL);
+    return CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER|ES_MULTILINE|ES_AUTOVSCROLL|ES_WANTRETURN,bookDescriptionBoxXpos,bookDescriptionBoxYpos,150,50,MainWindow,(HMENU)4,window.hInstance,NULL);
 }
-
+HWND createBookDescriptionWindow(HINSTANCE hInstance, HWND BookInfoWnd){
+    return CreateWindowEx(0,TEXT("EDIT"),"",WS_CHILD|WS_BORDER|ES_MULTILINE|WS_VISIBLE|WS_VSCROLL,bookInfoWndXpos,bookdescWNDYpos,bookInfoWndWidth,bookInfoWndHeight,BookInfoWnd,NULL,window.hInstance,NULL);
+}
 /*test adding a button that has the book's name and shit, assign the button to a book object (in memory after being shown), so basically everytime i retrieve data from the db
 i assign each column of the table to a button and show it on the current books window screen, clicking the button displays the book's information/synopsis on the bookinfo window*/
 
