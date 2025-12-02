@@ -223,13 +223,30 @@ void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,s
     }
 }
 }
-void shiftBTNS(HWND ParentWindow,HWND BTN,std::vector<bookWindows>&bookButtonsVec){
+void shiftBTNS(HWND BTN,std::vector<bookWindows>&bookButtonsVec){
     auto it = std::find_if(bookButtonsVec.begin(),bookButtonsVec.end(),[BTN](const bookWindows & bookwnd){
         return bookwnd.BTNWINDOW == BTN;
     });
     if(it != bookButtonsVec.end()){
-
         HWND btn2shift = it->BTNWINDOW;
+        size_t index = std::distance(bookButtonsVec.begin(),it);
+        size_t vecSize = bookButtonsVec.size();
+        if(index < bookButtonsVec.size()-1){
+            RECT rect;
+        GetWindowRect(bookButtonsVec[index].BTNWINDOW,&rect);
+        POINT pt = {rect.left,rect.top};
+        MapWindowPoints(HWND_DESKTOP,crntbookshWnd,&pt,1);
+        int y = pt.y;
+        int x = pt.x;
+        for(size_t i =  index; i<vecSize - 1;i++){
+                if(i == index){
+        SetWindowPos(bookButtonsVec[i+1].BTNWINDOW,HWND_TOP,x,y,0,0,SWP_NOSIZE);
+            }   else{
+            y += bookBtnHeight;
+            SetWindowPos(bookButtonsVec[i+1].BTNWINDOW,HWND_TOP,x,y,0,0,SWP_NOSIZE);
+                }
+            }
+        }
     }
 }
 
@@ -264,14 +281,19 @@ void deleteBookBTN(std::vector<bookWindows>&BookBTNS,int wParam){
         size_t index = std::distance(BookBTNS.begin(),it);
         size_t vecSize = BookBTNS.size();
         if(index < BookBTNS.size()-1){//check if the index of the element is NOT the last element
-        for(size_t i =  index; i<vecSize - 1;i++){
-        RECT rect;
-        GetWindowRect(BookBTNS[i].BTNWINDOW,&rect);
+            RECT rect;
+        GetWindowRect(BookBTNS[index].BTNWINDOW,&rect);
         POINT pt = {rect.left,rect.top};
-        MapWindowPoints(HWND_DESKTOP,crntbookshWnd,&pt,1);
+        MapWindowPoints(HWND_DESKTOP,crntbookshWnd,&pt,1);//grab its coorinates
         int y = pt.y;
         int x = pt.x;
+        for(size_t i =  index; i<vecSize - 1;i++){
+            if(i == index){//on the first iteration dont increment ypos
+        SetWindowPos(BookBTNS[i+1].BTNWINDOW,HWND_TOP,x,y,0,0,SWP_NOSIZE);
+        }   else{
+            y += bookBtnHeight;
             SetWindowPos(BookBTNS[i+1].BTNWINDOW,HWND_TOP,x,y,0,0,SWP_NOSIZE);
+        }
         }
     }
         if(DestroyWindow(windowTodestroy)){

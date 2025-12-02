@@ -13,7 +13,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 //retrieveALLFromDB(database,booksVec);
                 createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
-                EnableWindow(ModifyBookBtn,TRUE);
+                UpdateWindow(crntbookshWnd);
+                //EnableWindow(ModifyBookBtn,TRUE);
             }
             if(LOWORD(wParam)== 1002){
                 drawInputTexts = true;
@@ -66,7 +67,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 SetWindowText(BookId, "");
                 SetWindowText(BookDescriptionInput,"");
                 InvalidateRect(hWnd,NULL,TRUE);
-                createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
+                //createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
                 UpdateWindow(hWnd);
             }
