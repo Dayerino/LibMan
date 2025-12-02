@@ -194,6 +194,8 @@ int bookBtnYpos = CrntBooksWndYpos *0.1;
 int bookBtnWidth = CrntBooksWndWidth;
 int bookBtnHeight= crntBooksWndHeight * 0.1;
 std::vector<BOOK>usedBooks;
+int lastusedYpos;
+int lastusedWparam;
 std::unordered_map<int, BOOK>BooksMap;
 struct bookWindows{
     int wParam;
@@ -219,9 +221,26 @@ void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,s
         bookBtnsVec.push_back(newWindow);
         bookBtnWparam++;
         bookBtnYpos = bookBtnYpos + bookBtnHeight;
+        lastusedYpos = bookBtnYpos;
+        lastusedWparam = bookBtnWparam;
         usedBooks.push_back(el);
     }
 }
+}
+void add1newBooktoUI(BOOK booktoAdd,std::vector<BOOK>&booksVec,std::vector<BOOK>&usedBooks,std::unordered_map<int,BOOK>&BooksMap,std::vector<bookWindows>&bookBtnsVec,HWND ParentWindow){
+    std::string bookName = booktoAdd.getBookTitle();
+    std::string AuthorName = booktoAdd.getBookAuthor();
+    int bookID = booktoAdd.getBookID();
+    std::string Btntext = bookName + "| "+ AuthorName;
+    bookBtnYpos = lastusedYpos + bookBtnHeight;
+    bookBtnWparam = lastusedWparam + 1;
+    HWND newBookBTNWindow = CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT(Btntext.c_str()),WS_CHILD|WS_VISIBLE,bookBtnXpos,bookBtnYpos,bookBtnWidth,bookBtnHeight,ParentWindow,HMENU(bookBtnWparam),window.hInstance,NULL);
+    BooksMap.emplace(bookBtnWparam,booktoAdd);
+    bookWindows newWindow = {bookBtnWparam,newBookBTNWindow};
+    bookBtnsVec.push_back(newWindow);
+    bookBtnWparam++;
+    lastusedYpos = bookBtnYpos + bookBtnHeight;
+    usedBooks.push_back(booktoAdd);
 }
 void shiftBTNS(HWND BTN,std::vector<bookWindows>&bookButtonsVec){
     auto it = std::find_if(bookButtonsVec.begin(),bookButtonsVec.end(),[BTN](const bookWindows & bookwnd){
@@ -246,7 +265,9 @@ void shiftBTNS(HWND BTN,std::vector<bookWindows>&bookButtonsVec){
             SetWindowPos(bookButtonsVec[i+1].BTNWINDOW,HWND_TOP,x,y,0,0,SWP_NOSIZE);
                 }
             }
+            lastusedYpos = y;
         }
+        
     }
 }
 
@@ -295,6 +316,7 @@ void deleteBookBTN(std::vector<bookWindows>&BookBTNS,int wParam){
             SetWindowPos(BookBTNS[i+1].BTNWINDOW,HWND_TOP,x,y,0,0,SWP_NOSIZE);
         }
         }
+        lastusedYpos = y;
     }
         if(DestroyWindow(windowTodestroy)){
         BookBTNS.erase(it);

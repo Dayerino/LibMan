@@ -67,7 +67,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 SetWindowText(BookId, "");
                 SetWindowText(BookDescriptionInput,"");
                 InvalidateRect(hWnd,NULL,TRUE);
-                //createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
+                add1newBooktoUI(newObj,booksVec,usedBooks,BooksMap,bookbuttons,crntbookshWnd);
+                createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
                 UpdateWindow(hWnd);
             }
