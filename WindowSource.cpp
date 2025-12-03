@@ -24,11 +24,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(AuthorNameInput,SW_SHOW);
                 ShowWindow(BookId,SW_SHOW);
                 ShowWindow(BookDescriptionInput,SW_SHOW);
-                EnableWindow(ModifyBookBtn,TRUE);
                 }
             
             if(LOWORD(wParam)== 1003){
-                MessageBox(NULL,TEXT("button pressed!"),TEXT("not error"),MB_ICONEXCLAMATION);
+                drawInputTexts = true;
+                InvalidateRect(hWnd,NULL,TRUE);
+                SetWindowText(BookNameInput,foundBook.getBookTitle().c_str());
+                SetWindowText(AuthorNameInput,foundBook.getBookAuthor().c_str());
+                std::string bookidSTR = std::to_string(foundBook.getBookID());
+                SetWindowText(BookId,bookidSTR.c_str());
+                SetWindowText(BookDescriptionInput,foundBook.getBookDescription().c_str());
+                ShowWindow(BookNameInput,SW_SHOW);
+                ShowWindow(AuthorNameInput,SW_SHOW);
+                ShowWindow(BookId,SW_SHOW);
+                ShowWindow(BookDescriptionInput,SW_SHOW);
             }
             if(LOWORD(wParam)== 1004){
                     std::string booktitle = foundBook.getBookTitle();

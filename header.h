@@ -160,10 +160,10 @@ void addBookToDB(sqlite3* db,BOOK & bookObj){
     const char* sql = "INSERT INTO Books (bookName, authorName, bookID,BookDescription) VALUES (?,?,?,?);"; 
     sqlite3_stmt* statement;
     if(sqlite3_prepare_v2(db,sql,-1,&statement,nullptr)== SQLITE_OK){
-        sqlite3_bind_text(statement,1,bookObj.getBookTitle().c_str(),-1,SQLITE_TRANSIENT);
-        sqlite3_bind_text(statement,2,bookObj.getBookAuthor().c_str(),-1,SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement,1,bookObj.getBookTitle().c_str(),-1,SQLITE_STATIC);
+        sqlite3_bind_text(statement,2,bookObj.getBookAuthor().c_str(),-1,SQLITE_STATIC);
         sqlite3_bind_int(statement,3,bookObj.getBookID());
-        sqlite3_bind_text(statement,4,bookObj.getBookDescription().c_str(),-1,SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement,4,bookObj.getBookDescription().c_str(),-1,SQLITE_STATIC);
     if(sqlite3_step(statement) != SQLITE_DONE){
         MessageBox(hWnd,"insert error","error",MB_ICONERROR);
         }
@@ -272,8 +272,31 @@ void shiftBTNS(HWND BTN,std::vector<bookWindows>&bookButtonsVec){
 }
 
 /*modify a book */
-void modifyBookfromDB(sqlite3* db, BOOK & bookObj){
-
+void modifyBookfromDB(sqlite3* db, BOOK & newObj,BOOK & oldObj){
+    std::string oldBookTitle = oldObj.getBookTitle();
+    std::string newBookTitle = newObj.getBookTitle();
+    std::string newBookAuthor = newObj.getBookAuthor();
+    int newBookID = newObj.getBookID();
+    std::string newBookDescription = newObj.getBookDescription();
+    //const char* schema = "CREATE TABLE IF NOT EXISTS Books(bookName TEXT PRIMARY KEY,authorName TEXT,bookID INTEGER,BookDescription TEXT);";
+    const char* sql = "UPDATE Books SET bookName = ?, authorName = ?, bookID = ?, BookDescription = ? WHERE bookName = ?";
+    const char* sql2 = "UPDATE Books SET authorName = ? WHERE bookName = ?";
+    const char* sql3 = "UPDATE Books SET bookID = ? WHERE bookName = ?";
+    const char* sql4 = "UPDATE Books SET BookDescription = ? WHERE bookName = ?";
+    sqlite3_stmt* statement;
+    if(sqlite3_prepare_v2(db,sql,-1,&statement,nullptr)== SQLITE_OK){
+        sqlite3_bind_text(statement,1,newBookTitle.c_str(),-1,SQLITE_STATIC);
+        sqlite3_bind_text(statement,2,newBookAuthor.c_str(),-1,SQLITE_STATIC);
+        sqlite3_bind_int(statement,3,newBookID);
+        sqlite3_bind_text(statement,4,newBookDescription.c_str(),-1,SQLITE_STATIC);
+        sqlite3_bind_text(statement,5,oldBookTitle.c_str(),-1,SQLITE_STATIC);
+    }
+    if(sqlite3_step(statement)!=SQLITE_DONE){
+        MessageBox(hWnd,"modification error","error",MB_ICONERROR);
+    }else{
+        MessageBox(hWnd,"book modified!","success",MB_ICONINFORMATION);
+    }
+    sqlite3_finalize(statement);
 }
 /*delete a book from db*/
 //basically, remove the book from the db, then reshow buttons
@@ -282,7 +305,7 @@ void deleteFromDB(sqlite3*db,std::string BookTitle){
     const char* sql = "DELETE FROM Books WHERE bookName = ?";
     sqlite3_stmt* statement;
         if(sqlite3_prepare_v2(db,sql,-1,&statement,nullptr)== SQLITE_OK){
-            sqlite3_bind_text(statement,1,BookTitle.c_str(),-1,SQLITE_TRANSIENT);
+            sqlite3_bind_text(statement,1,BookTitle.c_str(),-1,SQLITE_STATIC);
             if(sqlite3_step(statement) != SQLITE_DONE){
                 MessageBox(hWnd,"deletion error","error",MB_ICONERROR);
             }

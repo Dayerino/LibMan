@@ -8,6 +8,7 @@ LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wP
                     foundBook = iterator->second;
                     selectedBookWparam = wParam;
                 }
+                EnableWindow(ModifyBookBtn,TRUE);
                 EnableWindow(RemoveBookBtn,TRUE);
                 UpdateWindow(bookinfohWnd);
                 InvalidateRect(bookinfohWnd,NULL,TRUE);
