@@ -349,6 +349,9 @@ void deleteBookBTN(std::vector<bookWindows>&BookBTNS,int wParam){
         }
     }
 }
+bool isnumber(const std::string& s){
+    return !s.empty() && std::all_of(s.begin(),s.end(), ::isdigit);
+}
 /*[wParam](const bookWindows& bookwnd){
         return bookwnd.wParam == wParam; }); lambda function used here */
 #endif
