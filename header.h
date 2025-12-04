@@ -35,11 +35,13 @@ HWND AddBookBtn;
 HWND ModifyBookBtn;
 HWND RemoveBookBtn;
 HWND SubmitNewBookBtn;
+HWND EditBookBtn;
 HWND CreateShowAllBooksButton(HINSTANCE hInstance,HWND MainWindow);
 HWND CreateAddBookButton(HINSTANCE hInstance, HWND MainWindow);
 HWND CreateModifyBookButton(HINSTANCE hInstance,HWND MainWindow);
 HWND CreateRemoveBookButton(HINSTANCE hInstance,HWND MainWindow);
 HWND CreateSubmitBtn(HINSTANCE hInstance, HWND MainWindow);
+HWND CreateEditBtn(HINSTANCE hInstance,HWND MainWindow);
 LRESULT CALLBACK ButtonWindowsProc(HWND BtnWndProc,UINT message,WPARAM wParam, LPARAM lParam);
 void registerBtnWindow(HINSTANCE hInstance);
 

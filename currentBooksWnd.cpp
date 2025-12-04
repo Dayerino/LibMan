@@ -3,6 +3,7 @@ LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wP
     switch(message){
         case WM_COMMAND:{
             if(LOWORD(wParam)>=5000){//book buttons start from 5000 and go on from here
+                //iterator here needs to be a global variable that i can reuse
                 auto iterator = BooksMap.find(wParam);
                 if(iterator !=BooksMap.end()){
                     foundBook = iterator->second;

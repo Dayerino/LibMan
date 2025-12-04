@@ -13,6 +13,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     ModifyBookBtn=CreateModifyBookButton(hInstance,hWnd);
     RemoveBookBtn=CreateRemoveBookButton(hInstance,hWnd);
     SubmitNewBookBtn = CreateSubmitBtn(hInstance,hWnd);
+    EditBookBtn = CreateEditBtn(hInstance,hWnd);
     BookNameInput = createBookNameInput(hInstance,hWnd);
     AuthorNameInput= createAuthorNameInput(hInstance,hWnd);
     BookId = createBookIdInput(hInstance,hWnd);

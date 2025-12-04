@@ -38,6 +38,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(AuthorNameInput,SW_SHOW);
                 ShowWindow(BookId,SW_SHOW);
                 ShowWindow(BookDescriptionInput,SW_SHOW);
+                ShowWindow(EditBookBtn,SW_SHOW);
             }
             if(LOWORD(wParam)== 1004){
                     std::string booktitle = foundBook.getBookTitle();
@@ -78,8 +79,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 InvalidateRect(hWnd,NULL,TRUE);
                 add1newBooktoUI(newObj,booksVec,usedBooks,BooksMap,bookbuttons,crntbookshWnd);
                 createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
+                EnableWindow(RemoveBookBtn,SW_HIDE);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
                 UpdateWindow(hWnd);
+            }
+            if(LOWORD(wParam) == 1006){
+                //i already grab the book from the database, i also need to grab it from the arrays? or i can just delete it
+                drawInputTexts = false;
+                ShowWindow(BookNameInput,SW_HIDE);
+                ShowWindow(AuthorNameInput,SW_HIDE);
+                ShowWindow(BookId,SW_HIDE);
+                ShowWindow(BookDescriptionInput,SW_HIDE);
+                std::string BN= GetTextFromInput(BookNameInput);
+                std::string AN=GetTextFromInput(AuthorNameInput);
+                std:: string bID=GetTextFromInput(BookId);
+                std:: string BD = GetTextFromInput(BookDescriptionInput);
+                int bookId = std::stoi(bID);
+                BOOK modifiedBook;
+                modifiedBook.setBookTitle(BN);
+                modifiedBook.setBookAuthor(AN);
+                modifiedBook.setBookID(bookId);
+                modifiedBook.setDescription(BD);
+                //I NEED TO USE A POINTER?
             }
             if(HIWORD(wParam) == EN_CHANGE){
                 int changedInput = LOWORD(wParam);
@@ -184,6 +205,9 @@ HWND CreateRemoveBookButton(HINSTANCE hInstance,HWND MainWindow){
 } 
 HWND CreateSubmitBtn(HINSTANCE hInstance, HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Submit Book"),WS_CHILD|WS_DISABLED|WS_VISIBLE,submitBookBtnXpos,submitBookBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1005,window.hInstance,NULL);
+}
+HWND CreateEditBtn(HINSTANCE hInstance,HWND MainWindow){
+    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Edit Book"),WS_CHILD|WS_DISABLED|WS_VISIBLE,submitBookBtnXpos,submitBookBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1006,window.hInstance,NULL);
 }
 /*
 BookNameInput   = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,BookNameInputBoxXpos,BookNameInputBoxYpos,150,25,hWnd,(HMENU)1,window.hInstance,NULL);
