@@ -10,7 +10,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
     break;
         case WM_COMMAND:{
             if(LOWORD(wParam)== 1001){//show all books in the db
-                //retrieveALLFromDB(database,booksVec);
+                retrieveALLFromDB(database,booksVec);
                 createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
                 UpdateWindow(crntbookshWnd);
@@ -20,14 +20,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
             if(LOWORD(wParam)== 1002){
                 drawInputTexts = true;
                 InvalidateRect(hWnd,NULL,TRUE);
-                //InvalidateRect(bookinfohWnd,NULL,TRUE);
+                InvalidateRect(bookinfohWnd,NULL,TRUE);
                 ShowWindow(BookNameInput,SW_SHOW);
                 ShowWindow(AuthorNameInput,SW_SHOW);
                 ShowWindow(BookId,SW_SHOW);
                 ShowWindow(BookDescriptionInput,SW_SHOW);
                 ShowWindow(SubmitNewBookBtn,SW_SHOW);
                 EnableWindow(SubmitNewBookBtn,TRUE);
-                ShowWindow(ModifyBookBtn,SW_HIDE);
                 EnableWindow(ModifyBookBtn,FALSE);
                 }
             
@@ -50,6 +49,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
             }
             if(LOWORD(wParam)== 1004){
                     std::string booktitle = foundBook.getBookTitle();
+                    MessageBox(hWnd,booktitle.c_str(),"SELECTED BOOK",MB_ICONINFORMATION);
                     deleteFromDB(database,booktitle);
                     deleteBookBTN(bookbuttons,selectedBookWparam);
                     BooksMap.erase(wParam);
@@ -136,9 +136,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                     }
                 }
                 EnableWindow(ModifyBookBtn,FALSE);
+                ShowWindow(EditBookBtn,SW_HIDE);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
-                UpdateWindow(crntbookshWnd);
-                //UpdateWindow(hWnd);
+                SetWindowText(BookNameInput, "");
+                SetWindowText(AuthorNameInput, "");
+                SetWindowText(BookId, "");
+                SetWindowText(BookDescriptionInput,"");
+                ShowWindow(BookNameInput,SW_HIDE);
+                ShowWindow(AuthorNameInput,SW_HIDE);
+                ShowWindow(BookId,SW_HIDE);
+                ShowWindow(BookDescriptionInput,SW_HIDE);
+                UpdateWindow(hWnd);
 
             }
             if(HIWORD(wParam) == EN_CHANGE){

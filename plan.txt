@@ -80,3 +80,4 @@ then a button to create the book will show up, how to save it will be worked on 
 will start writing here to keep track:
 current problem is loss of data when editing, basically when i edit a book its not being properly updated and some other book is losing data(name & author name)
 but description remains the same
+modify works, but after modifying or deleting a book, adding a new one will put it over the last one
