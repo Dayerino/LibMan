@@ -15,6 +15,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
                 UpdateWindow(crntbookshWnd);
                 EnableWindow(AddBookBtn,TRUE);
+                printallbookseverywhere(booksVec,usedBooks,BooksMap,bookbuttons,database);
                 //EnableWindow(ModifyBookBtn,TRUE);
             }
             if(LOWORD(wParam)== 1002){
@@ -89,6 +90,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
                 EnableWindow(RemoveBookBtn,SW_HIDE);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
+                EnableWindow(ModifyBookBtn,FALSE);
+                EnableWindow(RemoveBookBtn,FALSE);
+                EnableWindow(AddBookBtn,TRUE);
                 UpdateWindow(hWnd);
             }
             if(LOWORD(wParam) == 1006){
@@ -146,6 +150,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(AuthorNameInput,SW_HIDE);
                 ShowWindow(BookId,SW_HIDE);
                 ShowWindow(BookDescriptionInput,SW_HIDE);
+                EnableWindow(ModifyBookBtn,FALSE);
+                EnableWindow(RemoveBookBtn,FALSE);
+                EnableWindow(AddBookBtn,TRUE);
                 UpdateWindow(hWnd);
 
             }

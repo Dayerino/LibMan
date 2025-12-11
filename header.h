@@ -229,6 +229,51 @@ void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,s
     }
 }
 }
+//debugging function
+void printallbookseverywhere(std::vector<BOOK>booksVec,std::vector<BOOK>usedBooks,std::unordered_map<int,BOOK>BooksMap,std::vector<bookWindows>bookBtnsVec,sqlite3*db){
+    std::cout<<"books in booksvec: "<<std::endl;
+    for(BOOK el : booksVec){
+        std::cout<<el.getBookTitle()<<" "<<el.getBookAuthor()<<" "<<el.getBookID()<<std::endl;
+    }
+    std::cout<<std::endl;
+    std::cout<<"books in used Books vector: "<<std::endl;
+    for(BOOK el: usedBooks){
+        std::cout<<el.getBookTitle()<<" "<<el.getBookAuthor()<<" "<<el.getBookID()<<std::endl;
+    }
+    std::cout<<std::endl;
+    std::cout<<"elements in booksmap: "<<std::endl;
+    for(auto el:BooksMap){
+        std::cout<<"id: "<<el.first;
+        std::cout<<" book: "<<el.second.getBookTitle()<<" "<<el.second.getBookAuthor()<<" "<<el.second.getBookID()<<std::endl;
+    }
+    std::cout<<std::endl;
+    std::cout<<"books inside book buttons vector:"<<std::endl;
+    int buffer = 256;
+    for(auto el:bookBtnsVec){
+        std::cout<<"wparam: "<<el.wParam<<std::endl;
+        std::vector<char> bookName;
+        int len = GetWindowText(el.BTNWINDOW,bookName.data(),buffer);
+        if(len >0){
+            std::cout<<"Text : "<<std::string(bookName.data())<<std::endl;
+        }
+    }
+    std::cout<<std::endl;
+    std::cout<<"books inside the database:"<<std::endl;
+    const char* sql = "SELECT * FROM Books";
+    sqlite3_stmt* statement;
+    if(sqlite3_prepare_v2(db,sql,-1,&statement,nullptr) == SQLITE_OK){
+        while(sqlite3_step(statement) == SQLITE_ROW){
+            const unsigned char* bookName = sqlite3_column_text(statement,0);
+            const unsigned char* AuthorName = sqlite3_column_text(statement,1);
+            int bookID = sqlite3_column_int(statement,2);
+            std::cout<< "book Name: "<<bookName<<" AuthorName: "<<AuthorName<<" book id: "<<bookID<<std::endl;
+        }
+    }
+    sqlite3_finalize(statement);
+}
+
+//debugging function over
+
 void add1newBooktoUI(BOOK booktoAdd,std::vector<BOOK>&booksVec,std::vector<BOOK>&usedBooks,std::unordered_map<int,BOOK>&BooksMap,std::vector<bookWindows>&bookBtnsVec,HWND ParentWindow){
     std::string bookName = booktoAdd.getBookTitle();
     std::string AuthorName = booktoAdd.getBookAuthor();
@@ -242,6 +287,7 @@ void add1newBooktoUI(BOOK booktoAdd,std::vector<BOOK>&booksVec,std::vector<BOOK>
     bookBtnsVec.push_back(newWindow);
     bookBtnWparam++;
     lastusedYpos = bookBtnYpos + bookBtnHeight;
+    booksVec.push_back(booktoAdd);
     usedBooks.push_back(booktoAdd);
 }
 void shiftBTNS(HWND BTN,std::vector<bookWindows>&bookButtonsVec){

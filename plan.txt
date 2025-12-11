@@ -81,3 +81,20 @@ will start writing here to keep track:
 current problem is loss of data when editing, basically when i edit a book its not being properly updated and some other book is losing data(name & author name)
 but description remains the same
 modify works, but after modifying or deleting a book, adding a new one will put it over the last one
+//11/12/25
+here's the problem im seeing rn:
+inside the database are 6 books, 2 of them share the same id(this shouldnt happen)
+//
+
+books vec has 10 elements(?):
+shitt azer 1 //in the db
+third modified dsq 3 //in the db
+sixth modified again2 rere 7 // in the db
+negaah rawr 9 // in the db
+ninth fr modified sarze 9 // in the db (duplicate id)
+//the ones below are copies that shouldnt exist
+shitt azer 1
+third modified dsq 3
+sixth modified again2 rere 7
+negaah rawr 9
+ninth fr modified sarze 9

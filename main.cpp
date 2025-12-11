@@ -36,6 +36,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         MessageBox(hWnd,"database isnt opening","error",MB_ICONERROR);
     }
     rc = sqlite3_exec(database,schema,nullptr,nullptr,nullptr);
+    //creating a console for debugging
+    AllocConsole(); // create a console window
+    FILE* fp;
+    freopen_s(&fp, "CONOUT$", "w", stdout);
+    freopen_s(&fp, "CONOUT$", "w", stderr);
+    std::cout << "Debug message" << std::endl;
+    //debug code over
     while(GetMessage(&msg,NULL,0,0)){
         TranslateMessage(&msg);
         DispatchMessage(&msg);
