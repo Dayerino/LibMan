@@ -186,7 +186,7 @@ void retrieveALLFromDB(sqlite3* db,std::vector<BOOK>& booksVec){
             int bookID = sqlite3_column_int(statement,2);
             const unsigned char* bookDescription= sqlite3_column_text(statement,3);
             BOOK newObj(std::string(reinterpret_cast<const char*>(bookName)),std::string(reinterpret_cast<const char*>(AuthorName)),bookID,std::string(reinterpret_cast<const char*>(bookDescription)));
-            booksVec.push_back(newObj);
+            booksVec.push_back(newObj);//first push back 
         }
     }
 }

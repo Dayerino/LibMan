@@ -98,3 +98,4 @@ third modified dsq 3
 sixth modified again2 rere 7
 negaah rawr 9
 ninth fr modified sarze 9
+//fixed issue of books being duplicated inside the books vec

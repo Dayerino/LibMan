@@ -10,7 +10,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
     break;
         case WM_COMMAND:{
             if(LOWORD(wParam)== 1001){//show all books in the db
-                retrieveALLFromDB(database,booksVec);
                 createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
                 UpdateWindow(crntbookshWnd);
