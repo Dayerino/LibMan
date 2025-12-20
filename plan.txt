@@ -99,3 +99,5 @@ sixth modified again2 rere 7
 negaah rawr 9
 ninth fr modified sarze 9
 //fixed issue of books being duplicated inside the books vec
+20/12/25
+//now you cannot have duplicated book ids, fixed some ui elements not dissapearing when they're supposed to 

@@ -41,6 +41,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(BookNameInput,SW_SHOW);
                 ShowWindow(AuthorNameInput,SW_SHOW);
                 ShowWindow(BookId,SW_SHOW);
+                EnableWindow(BookId,FALSE);
+                
                 ShowWindow(BookDescriptionInput,SW_SHOW);
                 ShowWindow(EditBookBtn,SW_SHOW);
                 EnableWindow(EditBookBtn,TRUE);
@@ -64,15 +66,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
             }
             if(LOWORD(wParam) == 1005){
                 drawInputTexts = false;
-                ShowWindow(BookNameInput,SW_HIDE);
-                ShowWindow(AuthorNameInput,SW_HIDE);
-                ShowWindow(BookId,SW_HIDE);
-                ShowWindow(BookDescriptionInput,SW_HIDE);
                 std::string BN= GetTextFromInput(BookNameInput);
                 std::string AN=GetTextFromInput(AuthorNameInput);
                 std:: string bID=GetTextFromInput(BookId);
                 std:: string BD = GetTextFromInput(BookDescriptionInput);
-                int bookId = std::stoi(bID);
+                int bookId;
+                if(isnumber(bID)){
+                    bookId = std::stoi(bID); 
+                }else{
+                    MessageBox(hWnd,"please enter a number in book id","error",MB_ICONERROR);
+                    return 0;
+                }
+                //check if the book id exists <<somewhere>>
+                for(BOOK el: usedBooks){
+                    if(el.getBookID() == bookId){
+                        MessageBox(hWnd,"Book id already exists, use another one","error",MB_ICONERROR);
+                        return 0;
+                    }
+                }
                 newObj.setBookTitle(BN);
                 newObj.setBookAuthor(AN);
                 newObj.setBookID(bookId);
@@ -84,6 +95,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 SetWindowText(AuthorNameInput, "");
                 SetWindowText(BookId, "");
                 SetWindowText(BookDescriptionInput,"");
+                ShowWindow(BookNameInput,SW_HIDE);
+                ShowWindow(AuthorNameInput,SW_HIDE);
+                ShowWindow(BookId,SW_HIDE);
+                ShowWindow(BookDescriptionInput,SW_HIDE);
                 InvalidateRect(hWnd,NULL,TRUE);
                 add1newBooktoUI(newObj,booksVec,usedBooks,BooksMap,bookbuttons,crntbookshWnd);
                 createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
@@ -103,17 +118,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(BookDescriptionInput,SW_HIDE);
                 std::string BN= GetTextFromInput(BookNameInput);
                 std::string AN=GetTextFromInput(AuthorNameInput);
-                std:: string bID=GetTextFromInput(BookId);
+                //std:: string bID=GetTextFromInput(BookId);
                 std:: string BD = GetTextFromInput(BookDescriptionInput);
                 EnableWindow(AddBookBtn,FALSE);
-                int bookId;
-                if(isnumber(bID)){
+                int bookToModifyID = foundBook.getBookID();
+                /*if(isnumber(bID)){
                     bookId = std::stoi(bID); 
                 }else{
                     MessageBox(hWnd,"please enter a number in book id","error",MB_ICONERROR);
                     return 0;
-                }
-                BOOK modifiedBook(BN,AN,bookId,BD);
+                }*/
+                //what happens if the new id already belongs to another book?
+                BOOK modifiedBook(BN,AN,bookToModifyID,BD);
                 modifyBookfromDB(database,modifiedBook,foundBook);
                 std:: string btnText = BN + " | " + AN;
                 //find the book in the current vectors
@@ -152,6 +168,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 EnableWindow(ModifyBookBtn,FALSE);
                 EnableWindow(RemoveBookBtn,FALSE);
                 EnableWindow(AddBookBtn,TRUE);
+                InvalidateRect(hWnd,NULL,TRUE);
                 UpdateWindow(hWnd);
 
             }
@@ -182,13 +199,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
         case WM_PAINT:{
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd,&ps);
-            /*if(!booksVec.empty()){
-                int ypos = 20;
-                for(BOOK el: booksVec){
-                    automateBookShowing(el,hdc,10,ypos);
-                    ypos += 10;
-                }
-            }*/
             if(drawInputTexts){
             TextOut(hdc,enterBookNameXpos,enterBookNameYpos,enterBookName.c_str(),enterBookName.length());
             TextOut(hdc,enterAuthorNameXpos,enterAuthorNameYpos,enterAuthorName.c_str(),enterAuthorName.length());
@@ -245,7 +255,7 @@ HWND CreateBookInfoWindow(HINSTANCE hInstance,HWND MainWindow){
 
 //create buttons
 HWND CreateShowAllBooksButton(HINSTANCE hInstance,HWND MainWindow){
-   return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Show ALL Books"),WS_CHILD|WS_VISIBLE,showBooksBtnXpos,showBooksBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1001,window.hInstance,NULL);
+    return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Show ALL Books"),WS_CHILD|WS_VISIBLE,showBooksBtnXpos,showBooksBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1001,window.hInstance,NULL);
 }
 HWND CreateAddBookButton(HINSTANCE hInstance, HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Add Book"),WS_CHILD|WS_DISABLED|WS_VISIBLE,addBookBtnXpos,addBookBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1002,window.hInstance,NULL);
@@ -262,11 +272,6 @@ HWND CreateSubmitBtn(HINSTANCE hInstance, HWND MainWindow){
 HWND CreateEditBtn(HINSTANCE hInstance,HWND MainWindow){
     return CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT("Edit Book"),WS_CHILD|WS_DISABLED,submitBookBtnXpos,submitBookBtnYpos,BtnWidth,BtnHeight,MainWindow,(HMENU)1006,window.hInstance,NULL);
 }
-/*
-BookNameInput   = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,BookNameInputBoxXpos,BookNameInputBoxYpos,150,25,hWnd,(HMENU)1,window.hInstance,NULL);
-AuthorNameInput = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,AuthorNameBoxXpos,AuthorNameBoxYpos,150,25,hWnd,(HMENU)2,window.hInstance,NULL);
- BookId = CreateWindowEx(0,"EDIT","",WS_CHILD|WS_VISIBLE|WS_BORDER,BookIdBoxXpos,BookIdBoxYpos,150,25,hWnd,(HMENU)3,window.hInstance,NULL);
-*/
 HWND createBookNameInput(HINSTANCE hInstance,HWND MainWindow){
     return CreateWindowEx(0,"EDIT","",WS_CHILD|WS_BORDER|ES_AUTOVSCROLL|ES_WANTRETURN,BookNameInputBoxXpos,BookNameInputBoxYpos,150,25,MainWindow,(HMENU)1,window.hInstance,NULL);
 }

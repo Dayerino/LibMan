@@ -215,7 +215,6 @@ void createBookButtons(HWND ParentWindow,sqlite3*db,std::vector<BOOK>&booksVec,s
         std:: string AuthorName = el.getBookAuthor();
         int bookID = el.getBookID();
         std:: string BtnText = bookName + " | " + AuthorName;
-        //problem with this line
         HWND BTNWINDOW = CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT(BtnText.c_str()),WS_CHILD|WS_VISIBLE,bookBtnXpos,bookBtnYpos,bookBtnWidth,bookBtnHeight,ParentWindow,(HMENU)bookBtnWparam,window.hInstance,NULL);
         /*store the added book in a map, the key is the wparam and the value is the book object itself, to retrieve it when the button is pressed*/
         BooksMap.emplace(bookBtnWparam,el);
