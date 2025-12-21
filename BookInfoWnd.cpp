@@ -4,7 +4,7 @@ LRESULT CALLBACK BookInfoWindowProc(HWND bookinfohWnd,UINT message,WPARAM wParam
         case WM_PAINT:{
             PAINTSTRUCT Paint;
             HDC hdc = BeginPaint(bookinfohWnd,&Paint);
-            if(foundBook.getBookDescription()!= ""){
+            if(showDescription){//this doesnt change after deleting the book, so the text never updates
             SetWindowText(descriptionWindow,foundBook.getBookDescription().c_str());
         }else{
             SetWindowText(descriptionWindow,"");

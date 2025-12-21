@@ -141,6 +141,7 @@ void automateBookShowing(BOOK& bookObject,HDC hdc,int xpos,int ypos){
     TextOut(hdc,xpos,ypos,bookObject.getBookDescription().c_str(),bookObject.getBookDescription().length());
 }
 bool drawInputTexts = false;
+bool showDescription = false; //this starts out as false, once a book has been selected it becomes true, once a book has been deleted it becomes false again
 /*get the texts from the user*/
 std::string GetTextFromInput(HWND hwnd){
     std:: string text;

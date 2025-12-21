@@ -10,6 +10,7 @@ LRESULT CALLBACK currentBooksWndProc(HWND crntbookshWnd, UINT message, WPARAM wP
                     selectedBookWparam = wParam;
                 }
                 std:: string wp = std::to_string(selectedBookWparam);
+                showDescription = true;
                 //MessageBox(hWnd,"please enter a number in book id","error",MB_ICONERROR);
                 EnableWindow(ModifyBookBtn,TRUE);
                 EnableWindow(RemoveBookBtn,TRUE);

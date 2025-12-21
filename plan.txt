@@ -101,3 +101,6 @@ ninth fr modified sarze 9
 //fixed issue of books being duplicated inside the books vec
 20/12/25
 //now you cannot have duplicated book ids, fixed some ui elements not dissapearing when they're supposed to 
+21/12/25
+fixed description text not disappearing after deleting a book
+next is : deleting a book then adding a new book does not properly display all books
