@@ -273,23 +273,6 @@ void printallbookseverywhere(std::vector<BOOK>booksVec,std::vector<BOOK>usedBook
 }
 
 //debugging function over
-
-void add1newBooktoUI(BOOK booktoAdd,std::vector<BOOK>&booksVec,std::vector<BOOK>&usedBooks,std::unordered_map<int,BOOK>&BooksMap,std::vector<bookWindows>&bookBtnsVec,HWND ParentWindow){
-    std::string bookName = booktoAdd.getBookTitle();
-    std::string AuthorName = booktoAdd.getBookAuthor();
-    int bookID = booktoAdd.getBookID();
-    std::string Btntext = bookName + "| "+ AuthorName;
-    bookBtnYpos = lastusedYpos;
-    bookBtnWparam = lastusedWparam + 1;
-    HWND newBookBTNWindow = CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT(Btntext.c_str()),WS_CHILD|WS_VISIBLE,bookBtnXpos,bookBtnYpos,bookBtnWidth,bookBtnHeight,ParentWindow,HMENU(bookBtnWparam),window.hInstance,NULL);
-    BooksMap.emplace(bookBtnWparam,booktoAdd);
-    bookWindows newWindow = {bookBtnWparam,newBookBTNWindow};
-    bookBtnsVec.push_back(newWindow);
-    bookBtnWparam++;
-    lastusedYpos = bookBtnYpos + bookBtnHeight;
-    booksVec.push_back(booktoAdd);
-    usedBooks.push_back(booktoAdd);
-}
 void shiftBTNS(HWND BTN,std::vector<bookWindows>&bookButtonsVec){
     auto it = std::find_if(bookButtonsVec.begin(),bookButtonsVec.end(),[BTN](const bookWindows & bookwnd){
         return bookwnd.BTNWINDOW == BTN;
@@ -313,11 +296,37 @@ void shiftBTNS(HWND BTN,std::vector<bookWindows>&bookButtonsVec){
             SetWindowPos(bookButtonsVec[i+1].BTNWINDOW,HWND_TOP,x,y,0,0,SWP_NOSIZE);
                 }
             }
-            lastusedYpos = y;
+            lastusedYpos = y + bookBtnHeight;
         }
         
     }
 }
+
+void add1newBooktoUI(BOOK booktoAdd,std::vector<BOOK>&booksVec,std::vector<BOOK>&usedBooks,std::unordered_map<int,BOOK>&BooksMap,std::vector<bookWindows>&bookBtnsVec,HWND ParentWindow){
+    //get the final book in bookbtnsvec's position and increment it, that's your ypos
+    bookWindows& lastAddedBook = bookBtnsVec.back();
+    RECT rect;
+    GetWindowRect(lastAddedBook.BTNWINDOW,&rect);
+    POINT pt = {rect.left,rect.top};
+    ScreenToClient(ParentWindow,&pt);
+    int lastY = pt.y;
+    std::string bookName = booktoAdd.getBookTitle();
+    std::string AuthorName = booktoAdd.getBookAuthor();
+    int bookID = booktoAdd.getBookID();
+    std::string Btntext = bookName + "| "+ AuthorName;
+    bookBtnYpos = lastY + bookBtnHeight;
+    bookBtnWparam = lastusedWparam + 1;
+    HWND newBookBTNWindow = CreateWindowEx(WS_EX_APPWINDOW,TEXT("BUTTON"),TEXT(Btntext.c_str()),WS_CHILD|WS_VISIBLE,bookBtnXpos,bookBtnYpos,bookBtnWidth,bookBtnHeight,ParentWindow,HMENU(bookBtnWparam),window.hInstance,NULL);
+    BooksMap.emplace(bookBtnWparam,booktoAdd);
+    bookWindows newWindow = {bookBtnWparam,newBookBTNWindow};
+    bookBtnsVec.push_back(newWindow);
+    bookBtnWparam++;
+    lastusedYpos = bookBtnYpos + bookBtnHeight;
+    booksVec.push_back(booktoAdd);
+    usedBooks.push_back(booktoAdd);
+    shiftBTNS(newBookBTNWindow,bookBtnsVec);
+}
+
 
 /*modify a book */
 void modifyBookfromDB(sqlite3* db, BOOK & newObj,BOOK & oldObj){

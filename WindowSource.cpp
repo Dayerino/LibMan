@@ -17,7 +17,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 printallbookseverywhere(booksVec,usedBooks,BooksMap,bookbuttons,database);
                 //EnableWindow(ModifyBookBtn,TRUE);
             }
-            if(LOWORD(wParam)== 1002){
+            if(LOWORD(wParam)== 1002){//add
                 drawInputTexts = true;
                 InvalidateRect(hWnd,NULL,TRUE);
                 InvalidateRect(bookinfohWnd,NULL,TRUE);
@@ -30,7 +30,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 EnableWindow(ModifyBookBtn,FALSE);
                 }
             
-            if(LOWORD(wParam)== 1003){
+            if(LOWORD(wParam)== 1003){//modify
                 drawInputTexts = true;
                 InvalidateRect(hWnd,NULL,TRUE);
                 SetWindowText(BookNameInput,foundBook.getBookTitle().c_str());
@@ -49,7 +49,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(SubmitNewBookBtn,SW_HIDE);
                 EnableWindow(SubmitNewBookBtn,FALSE);
             }
-            if(LOWORD(wParam)== 1004){
+            if(LOWORD(wParam)== 1004){//delete
+                    
+                    //must change book's y pos
                     std::string booktitle = foundBook.getBookTitle();
                     MessageBox(hWnd,booktitle.c_str(),"SELECTED BOOK",MB_ICONINFORMATION);
                     deleteFromDB(database,booktitle);
@@ -57,14 +59,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                     BooksMap.erase(wParam);
                     booksVec.erase(std::remove(booksVec.begin(),booksVec.end(),foundBook),booksVec.end());
                     usedBooks.erase(std::remove(usedBooks.begin(),usedBooks.end(),foundBook),usedBooks.end());
-                    bookBtnYpos = CrntBooksWndYpos *0.1;
+                    //bookBtnYpos = CrntBooksWndYpos *0.1;
                     showDescription = false;
                     InvalidateRect(bookinfohWnd,NULL,TRUE);
                     InvalidateRect(crntbookshWnd,NULL,TRUE);
                     UpdateWindow(bookinfohWnd);
                     UpdateWindow(crntbookshWnd);
             }
-            if(LOWORD(wParam) == 1005){
+            if(LOWORD(wParam) == 1005){//submit book (add new book)
                 drawInputTexts = false;
                 std::string BN= GetTextFromInput(BookNameInput);
                 std::string AN=GetTextFromInput(AuthorNameInput);
@@ -101,7 +103,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(BookDescriptionInput,SW_HIDE);
                 InvalidateRect(hWnd,NULL,TRUE);
                 add1newBooktoUI(newObj,booksVec,usedBooks,BooksMap,bookbuttons,crntbookshWnd);
-                createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
+                //createBookButtons(crntbookshWnd,database,booksVec,usedBooks,BooksMap,bookbuttons);
                 EnableWindow(RemoveBookBtn,SW_HIDE);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
                 EnableWindow(ModifyBookBtn,FALSE);
@@ -109,7 +111,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 EnableWindow(AddBookBtn,TRUE);
                 UpdateWindow(hWnd);
             }
-            if(LOWORD(wParam) == 1006){
+            if(LOWORD(wParam) == 1006){//modify book (submit modification)
                 //i already grab the book from the database, i also need to grab it from the arrays? or i can just delete it
                 drawInputTexts = false;
                 ShowWindow(BookNameInput,SW_HIDE);

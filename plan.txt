@@ -104,3 +104,8 @@ ninth fr modified sarze 9
 21/12/25
 fixed description text not disappearing after deleting a book
 next is : deleting a book then adding a new book does not properly display all books
+->delete book then add book, new book displays over the final book instead of below it
+problem might be in deletebookbtn function
+fixed the issue with book display after removing a book
+new issue propped up: 
+descriptions dont show up properly after adding(?) or removing, not sure which
