@@ -14,7 +14,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
                 UpdateWindow(crntbookshWnd);
                 EnableWindow(AddBookBtn,TRUE);
-                printallbookseverywhere(booksVec,usedBooks,BooksMap,bookbuttons,database);
+                //printallbookseverywhere(booksVec,usedBooks,BooksMap,bookbuttons,database);
                 //EnableWindow(ModifyBookBtn,TRUE);
             }
             if(LOWORD(wParam)== 1002){//add
