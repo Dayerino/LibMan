@@ -158,6 +158,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 }
                 EnableWindow(ModifyBookBtn,FALSE);
                 ShowWindow(EditBookBtn,SW_HIDE);
+                EnableWindow(EditBookBtn,FALSE);
                 InvalidateRect(crntbookshWnd,NULL,TRUE);
                 SetWindowText(BookNameInput, "");
                 SetWindowText(AuthorNameInput, "");
@@ -167,8 +168,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
                 ShowWindow(AuthorNameInput,SW_HIDE);
                 ShowWindow(BookId,SW_HIDE);
                 ShowWindow(BookDescriptionInput,SW_HIDE);
-                EnableWindow(ModifyBookBtn,FALSE);
+                EnableWindow(BookId,TRUE);
                 EnableWindow(RemoveBookBtn,FALSE);
+                SetWindowText(descriptionWindow,"");
                 EnableWindow(AddBookBtn,TRUE);
                 InvalidateRect(hWnd,NULL,TRUE);
                 UpdateWindow(hWnd);

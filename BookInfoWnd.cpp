@@ -5,7 +5,10 @@ LRESULT CALLBACK BookInfoWindowProc(HWND bookinfohWnd,UINT message,WPARAM wParam
             PAINTSTRUCT Paint;
             HDC hdc = BeginPaint(bookinfohWnd,&Paint);
             if(showDescription){//this doesnt change after deleting the book, so the text never updates
-            SetWindowText(descriptionWindow,foundBook.getBookDescription().c_str());
+                std::string bookidTXT =std::to_string(foundBook.getBookID());
+            std:: string descText = "book id: " + bookidTXT + "\r\n\r\n"+ "Description: "+"\r\n" + foundBook.getBookDescription();//\r\n is windows's newline
+            
+            SetWindowText(descriptionWindow,descText.c_str());
         }else{
             SetWindowText(descriptionWindow,"");
         }
